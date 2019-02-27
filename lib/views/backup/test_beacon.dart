@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:beacons/beacons.dart';
 
-import './models/Device.dart';
-import './models/TargetBeacon.dart';
-import './models/NotificationManager.dart';
+import '../../models/Device.dart';
+import '../../models/TargetBeacon.dart';
+import '../../models/NotificationManager.dart';
 
 class BeaconView extends StatefulWidget {
   @override
