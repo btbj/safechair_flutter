@@ -10,7 +10,7 @@ class ChairPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             HeadBar(title: '我的座椅'),
-            Text('asdf', style: TextStyle(color: Colors.white)),
+            Text('chair info', style: TextStyle(color: Colors.white)),
           ],
         ),
       ),

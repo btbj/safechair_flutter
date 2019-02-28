@@ -25,7 +25,6 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('asdf');
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());

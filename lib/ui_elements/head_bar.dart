@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_chair/views/setting/setting.dart';
 
 class HeadBar extends StatelessWidget {
   final String title;
@@ -16,6 +17,10 @@ class HeadBar extends StatelessWidget {
         ),
         onPressed: () {
           print('setting');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SettingPage()),
+          );
         },
       );
     }

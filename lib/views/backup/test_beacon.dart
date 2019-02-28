@@ -65,7 +65,7 @@ class _BeaconViewState extends State<BeaconView> {
 
     _notificationTimer = Timer(Duration(seconds: 2), () {
       print('1234');
-      notificationManager.show('asdf');
+      notificationManager.show('test notification');
     });
   }
 
