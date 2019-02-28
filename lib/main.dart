@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/services.dart';
 
 import './scoped_model/main.dart';
 import './views/root/root.dart';
@@ -16,8 +17,19 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   final MainModel _model = MainModel();
 
+  void setStatusBarBrightness() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.dark.copyWith(
+        statusBarBrightness: Brightness.dark,
+        statusBarColor: Colors.blue, //or set color with: Color(0xFF0000FF)
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    setStatusBarBrightness();
+
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(

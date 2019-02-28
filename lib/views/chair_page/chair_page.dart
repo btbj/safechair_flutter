@@ -4,11 +4,12 @@ class ChairPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('chair page'),
-      ),
+      backgroundColor: Colors.black,
       body: Center(
-        child: Text('chair page'),
+        child: Text(
+          'chair page',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

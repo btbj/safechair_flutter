@@ -4,11 +4,12 @@ class WebPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('web page'),
-      ),
+      backgroundColor: Colors.black,
       body: Center(
-        child: Text('web page'),
+        child: Text(
+          'web page',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

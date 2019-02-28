@@ -17,6 +17,7 @@ class _TabPageState extends State<TabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: IndexedStack(
         children: <Widget>[
           ChairPage(),
@@ -27,7 +28,7 @@ class _TabPageState extends State<TabPage> {
         index: _tabIndex,
       ),
       bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         activeColor: Theme.of(context).primaryColor,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.child_care), title: Text('座椅控制')),

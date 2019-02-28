@@ -22,7 +22,7 @@ class BasicPlate extends StatelessWidget {
         body: ListView(
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height - 100,
+              height: MediaQuery.of(context).size.height - 150,
               child: child,
             )
           ],

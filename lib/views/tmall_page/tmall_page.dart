@@ -4,11 +4,12 @@ class TmallPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('tmall page'),
-      ),
+      backgroundColor: Colors.black,
       body: Center(
-        child: Text('tmall page'),
+        child: Text(
+          'tmall page',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
