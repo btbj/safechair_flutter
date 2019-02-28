@@ -6,7 +6,10 @@ import 'package:safe_chair/ui_elements/basic_btn.dart';
 import 'package:safe_chair/ui_elements/input_box.dart';
 import './components/logo_box.dart';
 
-import 'package:safe_chair/views/register/register.dart';
+import './register/register.dart';
+import './resetpwd/resetpwd.dart';
+
+import 'package:safe_chair/views/policy/service_policy.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -66,6 +69,10 @@ class _LoginPageState extends State<LoginPage> {
       ),
       onTap: () {
         print('reset pwd');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ResetpwdPage()),
+        );
       },
     );
   }
@@ -107,6 +114,42 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _buildLoginBtn() {
+    return BasicBtn(
+      label: '登录',
+      onTap: () {
+        print('username: ${usernameCtr.text}');
+        print('password: ${passwordCtr.text}');
+        _model.login();
+      },
+    );
+  }
+
+  Widget _buildPolicyInfo() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          '登录即代表阅读并同意',
+          style: TextStyle(color: Colors.grey[700], fontSize: 12),
+        ),
+        GestureDetector(
+          child: Text(
+            '服务条款',
+            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12),
+          ),
+          onTap: () {
+            print('service policy');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ServicePolicyPage()),
+            );
+          },
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,14 +166,9 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 100),
                 _buildLoginForm(),
                 SizedBox(height: 100),
-                BasicBtn(
-                  label: '登录',
-                  onTap: () {
-                    print('username: ${usernameCtr.text}');
-                    print('password: ${passwordCtr.text}');
-                    _model.login();
-                  },
-                ),
+                _buildLoginBtn(),
+                SizedBox(height: 10),
+                _buildPolicyInfo(),
               ],
             ),
           )

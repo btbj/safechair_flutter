@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 class BasicPlate extends StatelessWidget {
   final Widget child;
+  final String title;
 
-  BasicPlate({this.child});
+  BasicPlate({this.title = '', this.child});
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor = Theme.of(context).primaryColor;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -14,9 +17,11 @@ class BasicPlate extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
-          iconTheme: IconThemeData(
-            color: Theme.of(context).primaryColor, //change your color here
+          title: Text(
+            title,
+            style: TextStyle(color: primaryColor),
           ),
+          iconTheme: IconThemeData(color: primaryColor),
         ),
         backgroundColor: Colors.black,
         body: ListView(

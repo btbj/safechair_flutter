@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:safe_chair/ui_elements/basic_plate.dart';
 import 'package:safe_chair/ui_elements/input_box.dart';
 import 'package:safe_chair/ui_elements/basic_btn.dart';
-import './components/code_btn.dart';
+import 'package:safe_chair/ui_elements/code_btn.dart';
 
-class RegisterPage extends StatefulWidget {
+class ResetpwdPage extends StatefulWidget {
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _ResetpwdPageState createState() => _ResetpwdPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _ResetpwdPageState extends State<ResetpwdPage> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController usernameCtr = TextEditingController();
   final TextEditingController codeCtr = TextEditingController();
@@ -74,17 +74,17 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return BasicPlate(
+      title: '重设密码',
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 100),
-          _buildTitle(),
           SizedBox(height: 20),
           _buildRegisterForm(),
           SizedBox(height: 20),
           BasicBtn(
-            label: '加入',
+            label: '完成',
             onTap: () {
               print('username: ${usernameCtr.text}');
               print('code: ${codeCtr.text}');
