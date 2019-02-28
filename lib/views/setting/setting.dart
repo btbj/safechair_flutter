@@ -5,6 +5,11 @@ import './components/logout_btn.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/scoped_model/main.dart';
 
+import './subpages/chair_manage/chair_manage.dart';
+import './subpages/chair_intro/chair_intro.dart';
+import './subpages/temp_setting/temp_setting.dart';
+import './subpages/pwd_change/pwd_change.dart';
+
 class SettingPage extends StatefulWidget {
   @override
   SettingPageState createState() {
@@ -32,6 +37,12 @@ class SettingPageState extends State<SettingPage> {
       endLabel: deviceName,
       onTap: () {
         print('nav to chair manage');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChairManagePage(),
+          ),
+        );
       },
     );
   }
@@ -43,16 +54,28 @@ class SettingPageState extends State<SettingPage> {
       endLabel: deviceName,
       onTap: () {
         print('nav to chair intro');
+         Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChairIntroPage(),
+          ),
+        );
       },
     );
   }
 
   Widget _buildTempBtn() {
-    final String label = '温度控制';
+    final String label = '温度设置';
     return MenuNav(
       label: label,
       onTap: () {
         print('nav to temp control');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TempSettingPage(),
+          ),
+        );
       },
     );
   }
@@ -63,6 +86,12 @@ class SettingPageState extends State<SettingPage> {
       label: label,
       onTap: () {
         print('nav to pass setting');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PwdChangePage(),
+          ),
+        );
       },
     );
   }

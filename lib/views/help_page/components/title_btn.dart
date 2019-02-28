@@ -13,9 +13,11 @@ class TitleBtn extends StatelessWidget {
       title: Text(title, style: TextStyle(color: primaryColor)),
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DetailPage(title: title, content: content)),
-          );
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailPage(title: title, content: content),
+          ),
+        );
       },
     );
   }
