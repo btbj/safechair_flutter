@@ -12,6 +12,7 @@ import './resetpwd/resetpwd.dart';
 import 'package:safe_chair/views/policy/service_policy.dart';
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/ui_elements/toast.dart';
+import 'package:safe_chair/models/User.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -131,7 +132,12 @@ class _LoginPageState extends State<LoginPage> {
           });
           print('r: $response');
 
-          _model.login();
+          _model.login(User(
+            id: response['data']['user']['id'],
+            token: response['data']['user']['token'],
+            username: usernameCtr.text,
+            password: passwordCtr.text,
+          ));
         } catch (e) {
           print(e);
           Toast.show(context, e);

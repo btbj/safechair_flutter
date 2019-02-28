@@ -20,6 +20,7 @@ class _RootPageState extends State<RootPage> {
         this.isSignin = isSignin;
       });
     });
+    _model.autoLogin();
     super.initState();
   }
 
