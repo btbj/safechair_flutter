@@ -15,13 +15,13 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
   final TextEditingController codeCtr = TextEditingController();
   final TextEditingController passwordCtr = TextEditingController();
 
-  Widget _buildTitle() {
-    Color primaryColor = Theme.of(context).primaryColor;
-    return Text(
-      '欢迎加入',
-      style: TextStyle(color: primaryColor, fontSize: 20),
-    );
-  }
+  // Widget _buildTitle() {
+  //   Color primaryColor = Theme.of(context).primaryColor;
+  //   return Text(
+  //     '欢迎加入',
+  //     style: TextStyle(color: primaryColor, fontSize: 20),
+  //   );
+  // }
 
   Widget _buildUsernameTextField() {
     return InputBox(

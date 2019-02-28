@@ -10,6 +10,8 @@ import './register/register.dart';
 import './resetpwd/resetpwd.dart';
 
 import 'package:safe_chair/views/policy/service_policy.dart';
+import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/ui_elements/toast.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -117,10 +119,23 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginBtn() {
     return BasicBtn(
       label: '登录',
-      onTap: () {
+      onTap: () async {
         print('username: ${usernameCtr.text}');
         print('password: ${passwordCtr.text}');
-        _model.login();
+        if (passwordCtr.text.isEmpty || usernameCtr.text.isEmpty) return;
+
+        try {
+          final Map<String, dynamic> response = await api.post(api: '/user/do_login', body: {
+            'username': usernameCtr.text,
+            'password': passwordCtr.text,
+          });
+          print('r: $response');
+
+          _model.login();
+        } catch (e) {
+          print(e);
+          Toast.show(context, e);
+        }
       },
     );
   }
@@ -136,7 +151,8 @@ class _LoginPageState extends State<LoginPage> {
         GestureDetector(
           child: Text(
             '服务条款',
-            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12),
+            style:
+                TextStyle(color: Theme.of(context).primaryColor, fontSize: 12),
           ),
           onTap: () {
             print('service policy');

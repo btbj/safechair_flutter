@@ -34,7 +34,7 @@ class InputBox extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
-              style: TextStyle(color: primaryColor, fontSize: fontSize),
+              style: TextStyle(color: Colors.white, fontSize: fontSize),
               cursorColor: primaryColor,
               decoration: InputDecoration(
                   border: InputBorder.none,
