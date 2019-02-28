@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:safe_chair/ui_elements/head_bar.dart';
 
 class ChairPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Text(
-          'chair page',
-          style: TextStyle(color: Colors.white),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            HeadBar(title: '我的座椅'),
+            Text('asdf', style: TextStyle(color: Colors.white)),
+          ],
         ),
       ),
     );

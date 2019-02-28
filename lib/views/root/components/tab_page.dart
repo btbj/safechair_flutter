@@ -14,6 +14,15 @@ class TabPage extends StatefulWidget {
 class _TabPageState extends State<TabPage> {
   int _tabIndex = 0;
 
+  void _changeTabPage(int index) {
+    if (index == 1 || index == 2) {
+      print(index);
+    }
+    setState(() {
+      _tabIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,17 +40,16 @@ class _TabPageState extends State<TabPage> {
         backgroundColor: Colors.black,
         activeColor: Theme.of(context).primaryColor,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.child_care), title: Text('座椅控制')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.child_care), title: Text('座椅控制')),
           BottomNavigationBarItem(icon: Icon(Icons.web), title: Text('官网')),
-          BottomNavigationBarItem(icon: Icon(Icons.local_mall), title: Text('天猫')),
-          BottomNavigationBarItem(icon: Icon(Icons.lightbulb_outline), title: Text('帮助')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.local_mall), title: Text('天猫')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.lightbulb_outline), title: Text('帮助')),
         ],
         currentIndex: _tabIndex,
-        onTap: (index) {
-          setState(() {
-            _tabIndex = index;
-          });
-        },
+        onTap: _changeTabPage,
       ),
     );
   }

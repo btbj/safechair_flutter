@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import './components/logout_btn.dart';
+import 'package:safe_chair/ui_elements/head_bar.dart';
 
 class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
+      body: SafeArea(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text('help page'),
+            HeadBar(title: '帮助'),
             LogoutBtn(),
           ],
         ),
