@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:safe_chair/ui_elements/basic_plate.dart';
 import './components/menu_nav.dart';
 import './components/logout_btn.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:safe_chair/scoped_model/main.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -12,8 +14,16 @@ class SettingPage extends StatefulWidget {
 
 class SettingPageState extends State<SettingPage> {
   String deviceName = '茧之爱2';
-  String userEmail = 'aaa@aaa.aaa';
+  String usernameString = 'aaa@aaa.aaa';
   String versionCode = '0.1.3';
+  MainModel _model;
+
+  @override
+  void initState() {
+    _model = ScopedModel.of(context);
+    usernameString = _model.authUser.username;
+    super.initState();
+  }
 
   Widget _buildChairManageBtn() {
     final String label = '座椅管理';
@@ -82,7 +92,7 @@ class SettingPageState extends State<SettingPage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text('使用' + userEmail + '登录', style: style),
+        Text('使用' + usernameString + '登录', style: style),
         Text('版本号' + versionCode, style: style),
         Text('隐私政策', style: style),
       ],
