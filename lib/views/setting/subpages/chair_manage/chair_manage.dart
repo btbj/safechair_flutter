@@ -5,6 +5,8 @@ import 'package:safe_chair/ui_elements/basic_btn.dart';
 import './components/scan_qr/scan_manager.dart';
 import 'package:safe_chair/ui_elements/toast.dart';
 import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/models/Chair.dart';
+import 'package:safe_chair/store/chairStore.dart';
 
 class ChairManagePage extends StatefulWidget {
   @override
@@ -13,30 +15,63 @@ class ChairManagePage extends StatefulWidget {
 
 class _ChairManagePageState extends State<ChairManagePage> {
   MainModel _model;
-  List<Map<String, String>> deviceList = [
-    {'model': 'CN08', 'name': '茧之爱2'},
-    {'model': 'CN06', 'name': '茧之爱'},
-  ];
-  
+  List<Chair> chairList = [];
+
   @override
   void initState() {
-    _model = ScopedModel.of(context);
     super.initState();
+    _model = ScopedModel.of(context);
+    initChairData();
+  }
+
+  void initChairData() async {
+    final Map<String, dynamic> chairMap = await ChairStore.getChairMap();
+    chairList.clear();
+    for (var item in chairMap.values) {
+      chairList.add(
+        Chair(uuid: item['uuid'], name: item['name'], model: item['model']),
+      );
+    }
+    setState(() {});
   }
 
   Widget _buildList() {
     final Color primaryColor = Theme.of(context).primaryColor;
     List<Widget> _list = [];
-    for (var item in deviceList) {
+    for (Chair chair in chairList) {
+      bool isCurrent =
+          _model.currentChair != null && _model.currentChair.uuid == chair.uuid;
+
+      Widget checkBox = GestureDetector(
+        child: isCurrent
+            ? Icon(Icons.check_box, color: primaryColor)
+            : Icon(Icons.check_box_outline_blank, color: primaryColor),
+        onTap: () async {
+          await _model.setCurrentChair(chair);
+          setState(() {});
+        },
+      );
+
+      Widget deleteIcon = GestureDetector(
+        child: Icon(Icons.delete, color: Colors.red),
+        onTap: () async {
+          print('delete');
+          await ChairStore.removeChair(chair);
+          initChairData();
+          setState(() {});
+        },
+      );
+
       var listItem = ListTile(
+        leading: checkBox,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(item['model'], style: TextStyle(color: primaryColor)),
-            Text(item['name'], style: TextStyle(color: primaryColor)),
+            Text(chair.model, style: TextStyle(color: primaryColor)),
+            Text(chair.name, style: TextStyle(color: primaryColor)),
           ],
         ),
-        trailing: Icon(Icons.keyboard_arrow_right, color: primaryColor),
+        trailing: deleteIcon,
       );
       _list.add(listItem);
     }
@@ -73,6 +108,18 @@ class _ChairManagePageState extends State<ChairManagePage> {
         'uuid': uuid,
       });
       print('r: $response');
+      if (response['data']['product'] == null) {
+        Toast.show(context, '未找到产品');
+        return;
+      }
+      final Chair chair = Chair(
+        uuid: uuid,
+        name: response['data']['product']['name'],
+        model: response['data']['product']['model'],
+      );
+      await ChairStore.saveChair(chair);
+      initChairData();
+      Toast.show(context, '添加成功');
     } catch (e) {
       print(e);
       Toast.show(context, e);

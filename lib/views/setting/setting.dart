@@ -11,6 +11,8 @@ import './subpages/chair_intro/chair_intro.dart';
 import './subpages/temp_setting/temp_setting.dart';
 import './subpages/pwd_change/pwd_change.dart';
 
+// import 'package:safe_chair/models/Chair.dart';
+
 class SettingPage extends StatefulWidget {
   @override
   SettingPageState createState() {
@@ -19,40 +21,42 @@ class SettingPage extends StatefulWidget {
 }
 
 class SettingPageState extends State<SettingPage> {
-  String deviceName = '茧之爱2';
-  String usernameString = 'aaa@aaa.aaa';
   String versionCode = '0.1.3';
-  MainModel _model;
 
   @override
   void initState() {
-    _model = ScopedModel.of(context);
-    usernameString = _model.authUser.username;
     super.initState();
   }
 
+
   Widget _buildChairManageBtn() {
     final String label = '座椅管理';
-    return MenuNav(
-      label: label,
-      endLabel: deviceName,
-      onTap: () {
-        print('nav to chair manage');
-        NavManager.push(context, ChairManagePage());
-      },
-    );
+    return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
+      return MenuNav(
+        label: label,
+        endLabel: model.currentChair == null ? '' : model.currentChair.name,
+        onTap: () {
+          print('nav to chair manage');
+          NavManager.push(context, ChairManagePage()).then((_) {
+            // initPageData();
+          });
+        },
+      );
+    });
   }
 
   Widget _buildChairIntroBtn() {
     final String label = '座椅说明';
-    return MenuNav(
-      label: label,
-      endLabel: deviceName,
-      onTap: () {
-        print('nav to chair intro');
-        NavManager.push(context, ChairIntroPage());
-      },
-    );
+    return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
+      return MenuNav(
+        label: label,
+        endLabel: model.currentChair == null ? '' : model.currentChair.name,
+        onTap: () {
+          print('nav to chair intro');
+          NavManager.push(context, ChairIntroPage());
+        },
+      );
+    });
   }
 
   Widget _buildTempBtn() {
@@ -97,16 +101,17 @@ class SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildInfoMessage() {
-    final TextStyle style =TextStyle(color: Colors.grey[700], fontSize: 12);
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Text('使用' + usernameString + '登录', style: style),
-        Text('版本号' + versionCode, style: style),
-        Text('隐私政策', style: style),
-      ],
-    );
+    final TextStyle style = TextStyle(color: Colors.grey[700], fontSize: 12);
+    return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text('使用' + model.authUser.username + '登录', style: style),
+          Text('版本号' + versionCode, style: style),
+          Text('隐私政策', style: style),
+        ],
+      );
+    });
   }
 
   @override

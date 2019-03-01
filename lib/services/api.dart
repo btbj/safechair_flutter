@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-const host = 'http://192.168.0.33/2018/safe_chair/index.php';
+// const host = 'http://192.168.0.33/2018/safe_chair/index.php';
+const host = 'http://php.gooduo.net/safe_chair/index.php/';
 
 Future post(BuildContext context,
     {String api, dynamic body}) async {
@@ -29,6 +30,7 @@ Future post(BuildContext context,
     } else if (e is String) {
       throw (e);
     } else {
+      print(e);
       throw ('未知错误');
     }
   }
