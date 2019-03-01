@@ -31,7 +31,7 @@ mixin UserMixin on Model {
     NavManager.logout(context);
   }
 
-  void autoLogin() async {
+  void autoLogin(BuildContext context) async {
     final User user = await UserStore.getUser();
     if (user == null) {
       print('no user');
@@ -40,7 +40,7 @@ mixin UserMixin on Model {
 
     try {
       final Map<String, dynamic> response =
-          await api.post(api: '/user/do_login', body: {
+          await api.post(context, api: '/user/do_login', body: {
         'username': user.username,
         'password': user.password,
       });
