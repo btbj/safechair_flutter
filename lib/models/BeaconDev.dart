@@ -1,4 +1,4 @@
-class Device {
+class BeaconDev {
   int major = 0;
   int minor = 0;
 

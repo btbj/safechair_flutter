@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:beacons/beacons.dart';
 
-import '../../models/Device.dart';
+import '../../models/BeaconDev.dart';
 import '../../models/TargetBeacon.dart';
 import '../../models/NotificationManager.dart';
 
@@ -12,7 +12,7 @@ class BeaconView extends StatefulWidget {
 }
 
 class _BeaconViewState extends State<BeaconView> {
-  final Device device = Device();
+  final BeaconDev device = BeaconDev();
   final TargetBeacon targetBeacon =
       TargetBeacon('fda50693-a4e2-4fb1-afcf-c6eb07647825');
   final NotificationManager notificationManager = NotificationManager();
