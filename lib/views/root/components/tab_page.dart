@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import 'package:safe_chair/ui_elements/toast.dart';
 import '../../chair_page/chair_page.dart';
 import '../../web_page/web_page.dart';
 import '../../tmall_page/tmall_page.dart';
@@ -14,9 +16,24 @@ class TabPage extends StatefulWidget {
 class _TabPageState extends State<TabPage> {
   int _tabIndex = 0;
 
+  void openUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Toast.show(context, '不能打开网址');
+    }
+  }
+
   void _changeTabPage(int index) {
-    if (index == 1 || index == 2) {
-      print(index);
+    if (index == 1) {
+      print('launch web');
+      openUrl('http://www.welldon.net.cn/');
+      return;
+    }
+    if (index == 2) {
+      print('launch tmall');
+      openUrl('http://welldonqcyp.m.tmall.com/');
+      return;
     }
     setState(() {
       _tabIndex = index;

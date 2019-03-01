@@ -5,6 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/scoped_model/main.dart';
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/ui_elements/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChairIntroPage extends StatefulWidget {
   @override
@@ -46,7 +47,8 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
       chairInfo['model'] = response['data']['product']['model'];
       chairInfo['useful_area'] = response['data']['product']['useful_area'];
       chairInfo['setup_type'] = response['data']['product']['setup_type'];
-      chairInfo['setup_video_url'] = response['data']['product']['setup_video_url'];
+      chairInfo['setup_video_url'] =
+          response['data']['product']['setup_video_url'];
       setState(() {});
       Toast.show(context, '获取成功');
     } catch (e) {
@@ -57,9 +59,15 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
 
   Widget _buildVideoBtn() {
     Function onTap;
-    if (chairInfo['setup_video_url'] != null) {
-      onTap = () {
+    final String url = chairInfo['setup_video_url'];
+    if (url != null) {
+      onTap = () async {
         print('check video: ' + chairInfo['setup_video_url']);
+        if (await canLaunch(url)) {
+          await launch(url);
+        } else {
+          Toast.show(context, '不能打开网址');
+        }
       };
     }
     return BasicBtn(
