@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:safe_chair/ui_elements/basic_plate.dart';
 import 'package:safe_chair/ui_elements/basic_btn.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:safe_chair/scoped_model/main.dart';
+import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/ui_elements/toast.dart';
 
 class ChairIntroPage extends StatefulWidget {
   @override
@@ -8,22 +12,59 @@ class ChairIntroPage extends StatefulWidget {
 }
 
 class _ChairIntroPageState extends State<ChairIntroPage> {
+  MainModel _model;
+  Map<String, String> chairInfo = {
+    'name': '',
+    'model': '',
+    'useful_area': '',
+    'setup_type': '',
+    'setup_video_url': null
+  };
+
   @override
   void initState() {
+    _model = ScopedModel.of(context);
     _getDeviceInfo();
     super.initState();
   }
 
-  void _getDeviceInfo() {
+  void _getDeviceInfo() async {
     print('get device info');
+    if (_model.currentChair == null) return;
+    try {
+      final Map<String, dynamic> response =
+          await api.post(context, api: '/device/get_info_by_uuid', body: {
+        'token': _model.authUser.token,
+        'uuid': _model.currentChair.uuid,
+      });
+      print('r: $response');
+      if (response['data']['product'] == null) {
+        Toast.show(context, '未找到产品');
+        return;
+      }
+      chairInfo['name'] = response['data']['product']['name'];
+      chairInfo['model'] = response['data']['product']['model'];
+      chairInfo['useful_area'] = response['data']['product']['useful_area'];
+      chairInfo['setup_type'] = response['data']['product']['setup_type'];
+      chairInfo['setup_video_url'] = response['data']['product']['setup_video_url'];
+      setState(() {});
+      Toast.show(context, '获取成功');
+    } catch (e) {
+      print(e);
+      Toast.show(context, e);
+    }
   }
 
   Widget _buildVideoBtn() {
+    Function onTap;
+    if (chairInfo['setup_video_url'] != null) {
+      onTap = () {
+        print('check video: ' + chairInfo['setup_video_url']);
+      };
+    }
     return BasicBtn(
       label: '安装视频',
-      onTap: () {
-        print('check video');
-      },
+      onTap: onTap,
     );
   }
 
@@ -45,10 +86,10 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: <Widget>[
-          _buildLine('座椅名称:', '茧之爱'),
-          _buildLine('座椅型号:', '茧之爱'),
-          _buildLine('适用范围:', '茧之爱'),
-          _buildLine('安装方式:', '茧之爱'),
+          _buildLine('座椅名称:', chairInfo['name']),
+          _buildLine('座椅型号:', chairInfo['model']),
+          _buildLine('适用范围:', chairInfo['useful_area']),
+          _buildLine('安装方式:', chairInfo['setup_type']),
         ],
       ),
     );

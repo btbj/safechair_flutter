@@ -20,6 +20,7 @@ Future post(BuildContext context,
     if (response.statusCode != 200) throw ('网络错误: ${response.statusCode}');
     final Map<String, dynamic> res = json.decode(response.body);
 
+    print(body.toString());
     if (res['error_code'] == 110) throw ('请重新登录');
     if (!res['success']) throw (res['message']);
     return json.decode(response.body);
