@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:safe_chair/scoped_model/main.dart';
 import 'package:safe_chair/ui_elements/basic_btn.dart';
 import './components/scan_qr/scan_manager.dart';
+import 'package:safe_chair/ui_elements/toast.dart';
+import 'package:safe_chair/services/api.dart' as api;
 
 class ChairManagePage extends StatefulWidget {
   @override
@@ -8,10 +12,17 @@ class ChairManagePage extends StatefulWidget {
 }
 
 class _ChairManagePageState extends State<ChairManagePage> {
+  MainModel _model;
   List<Map<String, String>> deviceList = [
     {'model': 'CN08', 'name': '茧之爱2'},
     {'model': 'CN06', 'name': '茧之爱'},
   ];
+  
+  @override
+  void initState() {
+    _model = ScopedModel.of(context);
+    super.initState();
+  }
 
   Widget _buildList() {
     final Color primaryColor = Theme.of(context).primaryColor;
@@ -44,11 +55,28 @@ class _ChairManagePageState extends State<ChairManagePage> {
       label: '添加座椅',
       onTap: () {
         print('add chair');
-        ScanManager.start(context).then((qrString) {
-          print('qr: $qrString');
+        ScanManager.start(context).then((uuid) {
+          print('qr: $uuid');
+          if (uuid is String && uuid != null) {
+            getChairInfo(uuid);
+          }
         });
       },
     );
+  }
+
+  void getChairInfo(String uuid) async {
+    try {
+      final Map<String, dynamic> response =
+          await api.post(context, api: '/device/get_info_by_uuid', body: {
+        'token': _model.authUser.token,
+        'uuid': uuid,
+      });
+      print('r: $response');
+    } catch (e) {
+      print(e);
+      Toast.show(context, e);
+    }
   }
 
   @override
