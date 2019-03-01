@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_chair/ui_elements/basic_btn.dart';
+import './components/scan_qr/scan_manager.dart';
 
 class ChairManagePage extends StatefulWidget {
   @override
@@ -43,8 +44,9 @@ class _ChairManagePageState extends State<ChairManagePage> {
       label: '添加座椅',
       onTap: () {
         print('add chair');
-        deviceList.add({'model': 'asdf', 'name': 'sadfff'});
-        setState(() {});
+        ScanManager.start(context).then((qrString) {
+          print('qr: $qrString');
+        });
       },
     );
   }

@@ -63,5 +63,9 @@
 	<!-- http request -->
 	<key>NSAllowsArbitraryLoads</key>
 	<true/>
+
+	<!-- Camera for scan QR -->
+	<key>NSCameraUsageDescription</key>
+	<string>Camera for scan QR</string>
 </dict>
 </plist>
