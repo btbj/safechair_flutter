@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:safe_chair/models/User.dart';
+import 'dart:async';
 
 class UserStore {
   static Future saveUser(User user) async {

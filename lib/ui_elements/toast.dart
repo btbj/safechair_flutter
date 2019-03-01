@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class Toast {
   static show(BuildContext context, String msg, {int seconds = 2}) {
