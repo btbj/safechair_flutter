@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:safe_chair/models/User.dart';
 import 'package:safe_chair/store/userStore.dart';
 import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/utils/nav_manager.dart';
+
 
 mixin UserMixin on Model {
   User _authUser;
@@ -19,12 +22,13 @@ mixin UserMixin on Model {
     notifyListeners();
   }
 
-  void logout() async {
+  void logout(BuildContext context) async {
     print('logout');
     _authUser = null;
     await UserStore.removeUser();
     _authSubject.add(false);
     notifyListeners();
+    NavManager.logout(context);
   }
 
   void autoLogin() async {

@@ -3,6 +3,7 @@ import 'package:safe_chair/ui_elements/basic_plate.dart';
 import 'package:safe_chair/ui_elements/input_box.dart';
 import 'package:safe_chair/ui_elements/basic_btn.dart';
 import 'package:safe_chair/ui_elements/code_btn.dart';
+import 'package:safe_chair/utils/nav_manager.dart';
 
 import 'package:safe_chair/views/policy/service_policy.dart';
 
@@ -100,10 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           onTap: () {
             print('service policy');
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ServicePolicyPage()),
-            );
+            NavManager.push(context, ServicePolicyPage());
           },
         )
       ],

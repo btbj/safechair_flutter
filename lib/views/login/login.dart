@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../../scoped_model/main.dart';
 
+import 'package:safe_chair/utils/nav_manager.dart';
 import 'package:safe_chair/ui_elements/basic_btn.dart';
 import 'package:safe_chair/ui_elements/input_box.dart';
 import './components/logo_box.dart';
@@ -56,10 +57,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       onTap: () {
         print('register');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => RegisterPage()),
-        );
+        NavManager.push(context, RegisterPage());
       },
     );
   }
@@ -72,10 +70,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       onTap: () {
         print('reset pwd');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ResetpwdPage()),
-        );
+        NavManager.push(context, ResetpwdPage());
       },
     );
   }
@@ -126,18 +121,20 @@ class _LoginPageState extends State<LoginPage> {
         if (passwordCtr.text.isEmpty || usernameCtr.text.isEmpty) return;
 
         try {
-          final Map<String, dynamic> response = await api.post(api: '/user/do_login', body: {
+          final Map<String, dynamic> response =
+              await api.post(api: '/user/do_login', body: {
             'username': usernameCtr.text,
             'password': passwordCtr.text,
           });
           print('r: $response');
 
-          _model.login(User(
+          final User newUser = User(
             id: response['data']['user']['id'],
             token: response['data']['user']['token'],
             username: usernameCtr.text,
             password: passwordCtr.text,
-          ));
+          );
+          _model.login(newUser);
         } catch (e) {
           print(e);
           Toast.show(context, e);
@@ -162,10 +159,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           onTap: () {
             print('service policy');
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ServicePolicyPage()),
-            );
+            NavManager.push(context, ServicePolicyPage());
           },
         )
       ],

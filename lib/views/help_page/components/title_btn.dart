@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../detail_page.dart';
+import 'package:safe_chair/utils/nav_manager.dart';
 
 class TitleBtn extends StatelessWidget {
   final String title;
@@ -12,12 +13,7 @@ class TitleBtn extends StatelessWidget {
     return ListTile(
       title: Text(title, style: TextStyle(color: primaryColor)),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DetailPage(title: title, content: content),
-          ),
-        );
+        NavManager.push(context, DetailPage(title: title, content: content));
       },
     );
   }

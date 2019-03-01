@@ -10,8 +10,7 @@ class LogoutBtn extends StatelessWidget {
         return RaisedButton(
           child: Text('logout'),
           onPressed: () {
-            Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
-            model.logout();
+            model.logout(context);
           },
         );
       },

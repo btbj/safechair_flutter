@@ -4,6 +4,7 @@ import './components/menu_nav.dart';
 import './components/logout_btn.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/scoped_model/main.dart';
+import 'package:safe_chair/utils/nav_manager.dart';
 
 import './subpages/chair_manage/chair_manage.dart';
 import './subpages/chair_intro/chair_intro.dart';
@@ -37,12 +38,7 @@ class SettingPageState extends State<SettingPage> {
       endLabel: deviceName,
       onTap: () {
         print('nav to chair manage');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChairManagePage(),
-          ),
-        );
+        NavManager.push(context, ChairManagePage());
       },
     );
   }
@@ -54,12 +50,7 @@ class SettingPageState extends State<SettingPage> {
       endLabel: deviceName,
       onTap: () {
         print('nav to chair intro');
-         Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChairIntroPage(),
-          ),
-        );
+        NavManager.push(context, ChairIntroPage());
       },
     );
   }
@@ -70,12 +61,7 @@ class SettingPageState extends State<SettingPage> {
       label: label,
       onTap: () {
         print('nav to temp control');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TempSettingPage(),
-          ),
-        );
+        NavManager.push(context, TempSettingPage());
       },
     );
   }
@@ -86,12 +72,7 @@ class SettingPageState extends State<SettingPage> {
       label: label,
       onTap: () {
         print('nav to pass setting');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PwdChangePage(),
-          ),
-        );
+        NavManager.push(context, PwdChangePage());
       },
     );
   }

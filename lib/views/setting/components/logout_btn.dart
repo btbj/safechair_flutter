@@ -11,8 +11,7 @@ class LogoutBtn extends StatelessWidget {
         return BasicBtn(
           label: '登出',
           onTap: () {
-            Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
-            model.logout();
+            model.logout(context);
           },
         );
       },
