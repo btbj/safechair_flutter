@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:beacons/beacons.dart';
 
-import './models/Device.dart';
-import './models/TargetBeacon.dart';
-import './models/NotificationManager.dart';
+import '../../models/Device.dart';
+import '../../models/TargetBeacon.dart';
+import '../../models/NotificationManager.dart';
 
 class BeaconView extends StatefulWidget {
   @override
@@ -65,7 +65,7 @@ class _BeaconViewState extends State<BeaconView> {
 
     _notificationTimer = Timer(Duration(seconds: 2), () {
       print('1234');
-      notificationManager.show('asdf');
+      notificationManager.show('test notification');
     });
   }
 

@@ -59,5 +59,9 @@
 	<!-- for iOS 9/10 -->
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Reason why app needs location</string>
+
+	<!-- http request -->
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
 </dict>
 </plist>
