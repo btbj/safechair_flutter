@@ -17,6 +17,10 @@ Future<Map<String, dynamic>> post({String api, dynamic body}) async {
     return json.decode(response.body);
   } catch (e) {
     // print(e);
-    throw(e);
+    if (e is String) {
+      throw(e);
+    } else {
+      throw('未知错误');
+    }
   }
 }
