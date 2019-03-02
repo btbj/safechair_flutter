@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:safe_chair/scoped_model/main.dart';
 
 class CenterImg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      color: Colors.grey,
-      height: 250,
-      width: 180,
-      child: Text('center img'),
-    );
+    return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
+      return Container(
+        alignment: Alignment.center,
+        color: Colors.grey,
+        height: 250,
+        width: 180,
+        child: Text(model.chairState.state),
+      );
+    });
   }
 }

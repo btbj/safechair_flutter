@@ -8,20 +8,22 @@ class TargetBeacon {
 
   TargetBeacon(this.uuid);
 
-  void startRanging() {
+  Future startRanging() async {
     if (rangingSubscription != null) rangingSubscription.cancel();
 
     rangingSubscription = Beacons.ranging(
       region: BeaconRegionIBeacon(identifier: '', proximityUUID: uuid),
       inBackground: true,
     ).listen((_) {});
+    return;
   }
 
-  void startMonitoring() {
+  Future startMonitoring() async {
     if (monitoringSubscription != null) monitoringSubscription.cancel();
     monitoringSubscription = Beacons.monitoring(
       region: BeaconRegionIBeacon(identifier: '', proximityUUID: uuid),
       inBackground: true,
     ).listen((_) {});
+    return;
   }
 }

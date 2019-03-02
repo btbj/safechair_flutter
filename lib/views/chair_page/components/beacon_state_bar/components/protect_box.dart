@@ -8,7 +8,8 @@ class ProtectBox extends StatelessWidget {
     return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
       final bool haveChair = model.currentChair != null;
 
-      final Color displayColor = haveChair ? Colors.blue : Colors.grey;
+      // final Color displayColor = haveChair ? Colors.blue : Colors.grey;
+      final Color displayColor = Colors.grey;
       final String displayText = haveChair ? '已设置' : '未设置';
 
       return Container(
