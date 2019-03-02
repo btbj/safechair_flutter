@@ -103,10 +103,11 @@ class SettingPageState extends State<SettingPage> {
   Widget _buildInfoMessage() {
     final TextStyle style = TextStyle(color: Colors.grey[700], fontSize: 12);
     return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
+      final String username = model.authUser != null ? model.authUser.username : 'unknow';
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text('使用' + model.authUser.username + '登录', style: style),
+          Text('使用' + username + '登录', style: style),
           Text('版本号' + versionCode, style: style),
           Text('隐私政策', style: style),
         ],
