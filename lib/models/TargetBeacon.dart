@@ -26,4 +26,17 @@ class TargetBeacon {
     ).listen((_) {});
     return;
   }
+
+  Future stopMonitoring() async {
+    if (monitoringSubscription != null) {
+      monitoringSubscription.cancel();
+    }
+    if (rangingSubscription != null) {
+      rangingSubscription.cancel();
+    }
+    await Beacons.stopMonitoring(
+      BeaconRegionIBeacon(identifier: '', proximityUUID: uuid),
+    );
+    return;
+  }
 }

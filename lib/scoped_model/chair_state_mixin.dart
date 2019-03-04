@@ -11,21 +11,16 @@ mixin ChairStateMixin on Model {
   TargetBeacon _targetBeacon;
 
   void startMonitoring(String uuid) async {
+    if (_targetBeacon != null) await _targetBeacon.startMonitoring();
     if (uuid == null) return;
 
     _targetBeacon = TargetBeacon(uuid);
 
     await _targetBeacon.startMonitoring();
     _targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
-      print(result);
-      print(result.region.ids);
-      bool matched = _targetBeacon.uuid.toUpperCase() == result.region.ids[0];
-      if (matched) {
-        print(result.event.toString());
-        final NotificationManager notificationManager = NotificationManager();
-        notificationManager.init();
-        notificationManager.show(result.event.toString());
-      }
+      final String uuid = result.region.ids[0];
+      final String eventString = result.event.toString();
+      checkMonitoringResult(uuid, eventString);
     });
 
     await _targetBeacon.startRanging();
@@ -40,5 +35,19 @@ mixin ChairStateMixin on Model {
         }
       }
     });
+  }
+
+  void checkMonitoringResult(String uuid, String eventString) {
+    bool matched = _targetBeacon.uuid.toUpperCase() == uuid;
+    if (matched) {
+      print(eventString);
+      String msg = 'info: ';
+      msg += eventString;
+      msg += ' | $uuid';
+
+      final NotificationManager notificationManager = NotificationManager();
+      notificationManager.init();
+      notificationManager.show(msg);
+    }
   }
 }

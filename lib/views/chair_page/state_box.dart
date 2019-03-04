@@ -21,28 +21,32 @@ class _StateBoxState extends State<StateBox> {
 
   @override
   void initState() {
+    _model = ScopedModel.of(context);
+    _model.chairSubject.listen((newChair) {
+      if (newChair) {
+        startMonitor();
+      }
+    });
     super.initState();
     startMonitor();
   }
 
   void startMonitor() async {
-    _model = ScopedModel.of(context);
     if (_model.currentChair != null) {
       _model.startMonitoring(_model.currentChair.uuid);
     }
 
-    Beacons.backgroundMonitoringEvents().listen((BackgroundMonitoringEvent event) {
-      String msg = '';
-      msg += event.state.toString();
+    Beacons.backgroundMonitoringEvents()
+        .listen((BackgroundMonitoringEvent event) {
+      if (_model.currentChair == null) return;
 
-      final bool matched = _model.currentChair.uuid.toUpperCase() == event.region.ids[0].toString();
-      if (!matched) return;
-      if (event.state == MonitoringState.enterOrInside) return;
-      
-      final NotificationManager notificationManager = NotificationManager();
-      notificationManager.init();
-      notificationManager.show(msg);
+      final String uuid = event.region.ids[0];
+      final String eventString = event.state.toString();
+      _model.checkMonitoringResult(uuid, eventString);
     });
+
+    final NotificationManager notificationManager = NotificationManager();
+    notificationManager.init();
   }
 
   @override
