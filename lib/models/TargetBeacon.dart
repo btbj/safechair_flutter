@@ -24,6 +24,7 @@ class TargetBeacon {
       region: BeaconRegionIBeacon(identifier: '', proximityUUID: uuid),
       inBackground: true,
     ).listen((_) {});
+
     return;
   }
 
@@ -34,9 +35,15 @@ class TargetBeacon {
     if (rangingSubscription != null) {
       rangingSubscription.cancel();
     }
-    await Beacons.stopMonitoring(
-      BeaconRegionIBeacon(identifier: '', proximityUUID: uuid),
-    );
+    // if (uuid == null) return;
+    // try {
+    //   await Beacons.stopMonitoring(
+    //     BeaconRegionIBeacon(identifier: '', proximityUUID: uuid),
+    //   );
+    // } catch (e) {
+    //   print(e);
+    // }
+    
     return;
   }
 }

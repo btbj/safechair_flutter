@@ -12,6 +12,7 @@ mixin ChairMixin on Model {
   PublishSubject<bool> get chairSubject => this._chairSubject;
 
   void initCurrentChair() async {
+    print('init currentchair');
     _currentChair = await ChairStore.getCurrentChair();
     notifyListeners();
   }

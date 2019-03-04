@@ -25,6 +25,8 @@ class _StateBoxState extends State<StateBox> {
     _model.chairSubject.listen((newChair) {
       if (newChair) {
         startMonitor();
+      } else {
+        _model.stopMonitoring();
       }
     });
     super.initState();
@@ -32,18 +34,25 @@ class _StateBoxState extends State<StateBox> {
   }
 
   void startMonitor() async {
-    if (_model.currentChair != null) {
-      _model.startMonitoring(_model.currentChair.uuid);
-    }
-
+    print('start monitor');
     Beacons.backgroundMonitoringEvents()
         .listen((BackgroundMonitoringEvent event) {
-      if (_model.currentChair == null) return;
-
+      // // if (_model.currentChair == null) return;
+      _model.initTargetBeacon(_model.currentChair.uuid);
       final String uuid = event.region.ids[0];
-      final String eventString = event.state.toString();
+      final String eventString =
+          event.state == MonitoringState.exitOrOutside
+              ? 'Exit'
+              : 'Inside';
       _model.checkMonitoringResult(uuid, eventString);
+      // final NotificationManager notificationManager = NotificationManager();
+      // notificationManager.init();
+      // notificationManager.show(event.type.toString() + ' | ' + event.state.toString());
     });
+
+    if (_model.currentChair == null) return;
+    _model.initTargetBeacon(_model.currentChair.uuid);
+    _model.startMonitoring();
 
     final NotificationManager notificationManager = NotificationManager();
     notificationManager.init();

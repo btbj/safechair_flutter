@@ -6,6 +6,10 @@ class ChairState {
   String state;
 
   ChairState(int majorValue, int minorValue) {
+    setValue(majorValue, minorValue);
+  }
+
+  void setValue(int majorValue, int minorValue) {
     major = majorValue;
     minor = minorValue;
     battery = minor ~/ 256;
