@@ -40,11 +40,12 @@ class _StateBoxState extends State<StateBox> {
       // // if (_model.currentChair == null) return;
       _model.initTargetBeacon(_model.currentChair.uuid);
       final String uuid = event.region.ids[0];
-      final String eventString =
-          event.state == MonitoringState.exitOrOutside
-              ? 'Exit'
-              : 'Inside';
-      _model.checkMonitoringResult(uuid, eventString);
+      final String type = event.type.toString();
+      // final String eventString =
+      //     event.state == MonitoringState.exitOrOutside
+      //         ? 'Exit'
+      //         : 'Inside';
+      _model.checkMonitoringResult(uuid, type);
       // final NotificationManager notificationManager = NotificationManager();
       // notificationManager.init();
       // notificationManager.show(event.type.toString() + ' | ' + event.state.toString());
