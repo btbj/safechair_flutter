@@ -7,6 +7,7 @@ import '../../chair_page/chair_page.dart';
 import '../../web_page/web_page.dart';
 import '../../tmall_page/tmall_page.dart';
 import '../../help_page/help_page.dart';
+import 'package:safe_chair/ui_elements/alert_view.dart';
 
 class TabPage extends StatefulWidget {
   @override
@@ -15,6 +16,10 @@ class TabPage extends StatefulWidget {
 
 class _TabPageState extends State<TabPage> {
   int _tabIndex = 0;
+
+  showOverlay(BuildContext context) {
+    AlertView().show(context, 'cover box');
+  }
 
   void openUrl(String url) async {
     if (await canLaunch(url)) {
@@ -67,6 +72,13 @@ class _TabPageState extends State<TabPage> {
         ],
         currentIndex: _tabIndex,
         onTap: _changeTabPage,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.star),
+        onPressed: () {
+          print('overlay');
+          showOverlay(context);
+        },
       ),
     );
   }
