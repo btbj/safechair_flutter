@@ -7,7 +7,9 @@ import '../../chair_page/chair_page.dart';
 import '../../web_page/web_page.dart';
 import '../../tmall_page/tmall_page.dart';
 import '../../help_page/help_page.dart';
-import 'package:safe_chair/ui_elements/alert_view.dart';
+
+import 'package:scoped_model/scoped_model.dart';
+import 'package:safe_chair/scoped_model/main.dart';
 
 class TabPage extends StatefulWidget {
   @override
@@ -17,8 +19,16 @@ class TabPage extends StatefulWidget {
 class _TabPageState extends State<TabPage> {
   int _tabIndex = 0;
 
-  showOverlay(BuildContext context) {
-    AlertView().show(context, 'cover box');
+  MainModel _model;
+  @override
+  void initState() {
+    _model = ScopedModel.of(context);
+    _model.alertSubject.listen((String msg) {
+      setState(() {
+        _tabIndex = 0;
+      });
+    });
+    super.initState();
   }
 
   void openUrl(String url) async {
@@ -72,13 +82,6 @@ class _TabPageState extends State<TabPage> {
         ],
         currentIndex: _tabIndex,
         onTap: _changeTabPage,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.star),
-        onPressed: () {
-          print('overlay');
-          showOverlay(context);
-        },
       ),
     );
   }

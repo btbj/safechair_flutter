@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/scoped_model/main.dart';
@@ -7,6 +8,7 @@ import './components/state_img_box/state_img_box.dart';
 import './components/beacon_state_bar/beacon_state_bar.dart';
 import './components/temperature_box/temperature_box.dart';
 import './components/battery_box/battery_box.dart';
+import 'package:safe_chair/ui_elements/alert_view.dart';
 
 import 'package:beacons/beacons.dart';
 import 'package:safe_chair/models/NotificationManager.dart';
@@ -18,6 +20,7 @@ class StateBox extends StatefulWidget {
 
 class _StateBoxState extends State<StateBox> {
   MainModel _model;
+  AlertView alertView = AlertView();
 
   @override
   void initState() {
@@ -33,30 +36,55 @@ class _StateBoxState extends State<StateBox> {
     startMonitor();
   }
 
+  Future showOverlay(String msg) async {
+    alertView.show(context, msg);
+    return;
+  }
+
+  void checkMonitoringResult(String uuid, String eventString) {
+    if (_model.targetBeacon == null) return;
+    bool matched = _model.targetBeacon.uuid.toUpperCase() == uuid;
+    if (matched) {
+      print(eventString);
+      String msg = 'info: ';
+      msg += eventString;
+      msg += ' | $uuid';
+      msg += ' | ${_model.chairState.state}';
+      String time = DateTime.now().toString();
+      msg += ' | $time';
+
+      final NotificationManager notificationManager = NotificationManager();
+      // notificationManager.init(onSelectNotification: showOverlay);
+      notificationManager.init();
+      notificationManager.show(msg, payload: time, sound: NotificationSound.beep);
+      showOverlay(msg);
+    }
+  }
+
   void startMonitor() async {
     print('start monitor');
+    final NotificationManager notificationManager = NotificationManager();
+    notificationManager.init();
+
     Beacons.backgroundMonitoringEvents()
         .listen((BackgroundMonitoringEvent event) {
-      // // if (_model.currentChair == null) return;
+      if (_model.currentChair == null) return;
       _model.initTargetBeacon(_model.currentChair.uuid);
       final String uuid = event.region.ids[0];
       final String type = event.type.toString();
-      // final String eventString =
-      //     event.state == MonitoringState.exitOrOutside
-      //         ? 'Exit'
-      //         : 'Inside';
-      _model.checkMonitoringResult(uuid, type);
-      // final NotificationManager notificationManager = NotificationManager();
-      // notificationManager.init();
-      // notificationManager.show(event.type.toString() + ' | ' + event.state.toString());
+
+      checkMonitoringResult(uuid, type);
     });
 
     if (_model.currentChair == null) return;
     _model.initTargetBeacon(_model.currentChair.uuid);
-    _model.startMonitoring();
+    await _model.startMonitoring();
 
-    final NotificationManager notificationManager = NotificationManager();
-    notificationManager.init();
+    _model.targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
+      final String uuid = result.region.ids[0];
+      final String eventString = result.event.toString();
+      checkMonitoringResult(uuid, eventString);
+    });
   }
 
   @override

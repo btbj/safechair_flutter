@@ -8,16 +8,16 @@ class NotificationSound {
 class NotificationManager {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  void init() {
+  void init({Function onSelectNotification}) {
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: onSelectNotification);
   }
 
-  Future show(String message, {String sound}) async {
+  Future show(String message, {String sound, String payload}) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.Max, priority: Priority.High);
@@ -26,7 +26,7 @@ class NotificationManager {
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
         0, 'title', message, platformChannelSpecifics,
-        payload: 'item id 2');
+        payload: payload);
     return;
   }
 }
