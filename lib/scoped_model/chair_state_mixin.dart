@@ -39,7 +39,7 @@ mixin ChairStateMixin on Model {
         bool matched = _targetBeacon.uuid.toUpperCase() == ids[0];
         if (matched) {
           _chairState.setValue(ids[1], ids[2]);
-          print('${_chairState.major}, ${_chairState.minor}');
+          // print('${_chairState.major}, ${_chairState.minor}');
           notifyListeners();
         }
       }
@@ -76,5 +76,10 @@ mixin ChairStateMixin on Model {
   void showAlert(String alertmsg) {
     print('show alert');
     _alertSubject.add(alertmsg);
+  }
+
+  void deactiveChairState() {
+    _chairState.deactive();
+    notifyListeners();
   }
 }

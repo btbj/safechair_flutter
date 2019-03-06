@@ -41,24 +41,21 @@ class _StateBoxState extends State<StateBox> {
     return;
   }
 
-  void checkMonitoringResult(String uuid, String eventString) {
+  void checkMonitoringResult(String uuid) {
     if (_model.targetBeacon == null) return;
     bool matched = _model.targetBeacon.uuid.toUpperCase() == uuid;
-    if (matched) {
-      print(eventString);
-      String msg = 'info: ';
-      msg += eventString;
-      msg += ' | $uuid';
-      msg += ' | ${_model.chairState.state}';
-      String time = DateTime.now().toString();
-      msg += ' | $time';
+    if (!matched) return;
+    String msg = 'info: ';
+    msg += '$uuid';
+    msg += ' | ${_model.chairState.state}';
+    String time = DateTime.now().toString();
+    msg += ' | $time';
 
-      final NotificationManager notificationManager = NotificationManager();
-      // notificationManager.init(onSelectNotification: showOverlay);
-      notificationManager.init();
-      notificationManager.show(msg, payload: time, sound: NotificationSound.beep);
-      showOverlay(msg);
-    }
+    final NotificationManager notificationManager = NotificationManager();
+    // notificationManager.init(onSelectNotification: showOverlay);
+    notificationManager.init();
+    notificationManager.show(msg, payload: time, sound: NotificationSound.beep);
+    showOverlay(msg);
   }
 
   void startMonitor() async {
@@ -71,9 +68,10 @@ class _StateBoxState extends State<StateBox> {
       if (_model.currentChair == null) return;
       _model.initTargetBeacon(_model.currentChair.uuid);
       final String uuid = event.region.ids[0];
-      final String type = event.type.toString();
-
-      checkMonitoringResult(uuid, type);
+      if (event.type == BackgroundMonitoringEventType.didDetermineState && event.state == MonitoringState.exitOrOutside) {
+        _model.deactiveChairState();
+        checkMonitoringResult(uuid);
+      }
     });
 
     if (_model.currentChair == null) return;
@@ -82,8 +80,10 @@ class _StateBoxState extends State<StateBox> {
 
     _model.targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
       final String uuid = result.region.ids[0];
-      final String eventString = result.event.toString();
-      checkMonitoringResult(uuid, eventString);
+      if (result.event == MonitoringState.exitOrOutside) {
+        _model.deactiveChairState();
+        checkMonitoringResult(uuid);
+      }
     });
   }
 
