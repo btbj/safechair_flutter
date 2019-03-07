@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:safe_chair/models/User.dart';
 import 'package:safe_chair/store/userStore.dart';
-import 'package:safe_chair/services/api.dart' as api;
+// import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/utils/nav_manager.dart';
 
 
@@ -38,27 +38,31 @@ mixin UserMixin on Model {
       return;
     }
 
-    try {
-      final Map<String, dynamic> response =
-          await api.post(context, api: '/user/do_login', body: {
-        'username': user.username,
-        'password': user.password,
-      });
-      print('auto login: $response');
+    _authUser = user;
+    _authSubject.add(true);
+    notifyListeners();
 
-      final User newUser = User(
-        id: response['data']['user']['id'],
-        token: response['data']['user']['token'],
-        username: user.username,
-        password: user.password,
-      );
+    // try {
+    //   final Map<String, dynamic> response =
+    //       await api.post(context, api: '/user/do_login', body: {
+    //     'username': user.username,
+    //     'password': user.password,
+    //   });
+    //   print('auto login: $response');
 
-      _authUser = newUser;
-      await UserStore.saveUser(newUser);
-      _authSubject.add(true);
-      notifyListeners();
-    } catch (e) {
-      print(e);
-    }
+    //   final User newUser = User(
+    //     id: response['data']['user']['id'],
+    //     token: response['data']['user']['token'],
+    //     username: user.username,
+    //     password: user.password,
+    //   );
+
+    //   _authUser = newUser;
+    //   await UserStore.saveUser(newUser);
+    //   _authSubject.add(true);
+    //   notifyListeners();
+    // } catch (e) {
+    //   print(e);
+    // }
   }
 }
