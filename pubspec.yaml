@@ -52,6 +52,7 @@ flutter:
    - assets/img/logo/
    - assets/img/state_icon/
    - assets/img/chair_img/
+   - assets/img/tab_bar/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
