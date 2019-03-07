@@ -74,7 +74,6 @@ mixin ChairStateMixin on Model {
   }
 
   void showAlert(String alertmsg) {
-    print('show alert');
     _alertSubject.add(alertmsg);
   }
 

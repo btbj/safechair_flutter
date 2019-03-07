@@ -51,6 +51,8 @@ class _StateBoxState extends State<StateBox> {
     String time = DateTime.now().toString();
     msg += ' | $time';
 
+    _model.showAlert('exit');
+
     final NotificationManager notificationManager = NotificationManager();
     // notificationManager.init(onSelectNotification: showOverlay);
     notificationManager.init();

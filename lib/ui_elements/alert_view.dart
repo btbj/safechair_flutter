@@ -3,18 +3,14 @@ import 'dart:async';
 
 class AlertView {
   String msg;
-  bool displaying = false;
 
   Future show(BuildContext context, String msg) {
-    if (displaying) {
-      Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
-      this.displaying = false;
-    }
-    this.displaying = true;
+    Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
+    
     this.msg = msg;
     return showDialog(
       context: context,
-      // barrierDismissible: false,
+      barrierDismissible: false,
       builder: (BuildContext context) => AlertDialogBox(msg),
     );
   }
