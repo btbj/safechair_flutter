@@ -8,14 +8,20 @@ class ProgressArc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: <Widget>[
-        CustomPaint(
-          painter: ProgressArcPinter(),
-        ),
-        CustomPaint(
-          painter: ProgressDotPinter(progress),
-        ),
-      ],
+      children: progress == null
+          ? <Widget>[
+              CustomPaint(
+                painter: ProgressArcPinter(),
+              ),
+            ]
+          : <Widget>[
+              CustomPaint(
+                painter: ProgressArcPinter(),
+              ),
+              CustomPaint(
+                painter: ProgressDotPinter(progress),
+              ),
+            ],
     );
   }
 }

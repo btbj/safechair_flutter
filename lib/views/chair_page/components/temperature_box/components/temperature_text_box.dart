@@ -19,7 +19,7 @@ class TemperatureTextBox extends StatelessWidget {
               child: Text(temperature == null ? '??' : temperature.toString(),
                   style: TextStyle(
                       fontSize: 40,
-                      color: Colors.white,
+                      color: temperature == null ? Colors.grey : Colors.white,
                       textBaseline: TextBaseline.alphabetic)),
             ),
             Baseline(
@@ -28,14 +28,14 @@ class TemperatureTextBox extends StatelessWidget {
               child: Text('℃',
                   style: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: temperature == null ? Colors.grey : Colors.white,
                       textBaseline: TextBaseline.alphabetic)),
             ),
           ],
         ),
         Text(
           '当前车内温度',
-          style: TextStyle(fontSize: 13, color: Colors.white),
+          style: TextStyle(fontSize: 13, color: temperature == null ? Colors.grey : Colors.white),
         ),
       ],
     );

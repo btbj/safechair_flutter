@@ -7,7 +7,7 @@ import 'package:safe_chair/scoped_model/main.dart';
 
 class TemperatureBox extends StatelessWidget {
   int getProgress(int temperature) {
-    if (temperature == null) return 50;
+    if (temperature == null) return null;
     final int low = 10;
     final int high = 40;
     int progress;
