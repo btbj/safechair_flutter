@@ -48,6 +48,7 @@ class _ChairManagePageState extends State<ChairManagePage> {
             : Icon(Icons.check_box_outline_blank, color: primaryColor),
         onTap: () async {
           await _model.setCurrentChair(chair);
+          _model.deactiveChairState();
           setState(() {});
         },
       );
