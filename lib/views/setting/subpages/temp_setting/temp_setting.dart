@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:safe_chair/ui_elements/basic_plate.dart';
 import './components/unit_switch.dart';
+// import './components/high_temp_string.dart';
+// import './components/low_temp_string.dart';
+import './components/slider_dialog.dart';
 
 class TempSettingPage extends StatefulWidget {
   @override
@@ -10,7 +13,7 @@ class TempSettingPage extends StatefulWidget {
 class _TempSettingPageState extends State<TempSettingPage> {
   bool highTempAlertOn = false;
   bool lowTempAlertOn = false;
-  int hightTempLimit = 30;
+  int highTempLimit = 30;
   int lowTempLimit = 4;
   bool isF = false;
 
@@ -25,11 +28,35 @@ class _TempSettingPageState extends State<TempSettingPage> {
   }
 
   String _generateTempString(int temp) {
-    if (!isF) return '$temp' + '℃';
+    if (!isF)
+      return '$temp' + '℃';
     else {
       final int fTemp = (temp * 1.8).round() + 32;
       return '$fTemp' + '℉';
     }
+  }
+
+  void showTempDialog({bool isHigh}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SliderDialog(
+          title: isHigh ? '高温报警温度设置' : '低温报警温度设置',
+          isF: isF,
+          initTemp: isHigh ? highTempLimit : lowTempLimit,
+          max: isHigh ? 50 : highTempLimit,
+          min: isHigh ? lowTempLimit : 0,
+        );
+      },
+    ).then((value) {
+      print('pop value = $value');
+      if (value == null) return;
+      if (isHigh)
+        highTempLimit = value;
+      else
+        lowTempLimit = value;
+      setState(() {});
+    });
   }
 
   Widget _buildHightTempLine() {
@@ -40,7 +67,12 @@ class _TempSettingPageState extends State<TempSettingPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('高温报警', style: TextStyle(color: primaryColor)),
-          Text(_generateTempString(hightTempLimit), style: TextStyle(color: primaryColor)),
+          FlatButton(
+            child: Text(_generateTempString(highTempLimit), style: TextStyle(color: primaryColor)),
+            onPressed: () {
+              showTempDialog(isHigh: true);
+            },
+          ),
         ],
       ),
       trailing: Switch(
@@ -65,7 +97,13 @@ class _TempSettingPageState extends State<TempSettingPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('低温报警', style: TextStyle(color: primaryColor)),
-          Text(_generateTempString(lowTempLimit), style: TextStyle(color: primaryColor)),
+          FlatButton(
+            child: Text(_generateTempString(lowTempLimit), style: TextStyle(color: primaryColor)),
+            onPressed: () {
+              showTempDialog(isHigh: false);
+            },
+          ),
+          // LowTempString(isF: isF)
         ],
       ),
       trailing: Switch(
@@ -87,12 +125,15 @@ class _TempSettingPageState extends State<TempSettingPage> {
 
     return ListTile(
       title: Text('温度单位', style: TextStyle(color: primaryColor)),
-      trailing: UnitSwitch(isF: isF, onTap: () {
-        setState(() {
-          print('change unit');
-          isF = !isF;
-        });
-      },),
+      trailing: UnitSwitch(
+        isF: isF,
+        onTap: () {
+          setState(() {
+            print('change unit');
+            isF = !isF;
+          });
+        },
+      ),
     );
   }
 

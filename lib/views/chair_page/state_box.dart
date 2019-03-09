@@ -78,7 +78,7 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
   void startMonitor() async {
     print('start monitor');
     await _model.initCurrentChair();
-    print(_model.currentChair.uuid);
+    // print(_model.currentChair.uuid);
 
     Beacons.backgroundMonitoringEvents()
         .listen((BackgroundMonitoringEvent event) {
