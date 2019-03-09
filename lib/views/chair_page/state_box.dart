@@ -11,19 +11,22 @@ import './components/battery_box/battery_box.dart';
 import 'package:safe_chair/ui_elements/alert_view.dart';
 
 import 'package:beacons/beacons.dart';
-import 'package:safe_chair/models/NotificationManager.dart';
+import 'package:safe_chair/utils/NotificationManager.dart';
 
 class StateBox extends StatefulWidget {
   @override
   _StateBoxState createState() => _StateBoxState();
 }
 
-class _StateBoxState extends State<StateBox> {
+class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
   MainModel _model;
+  NotificationManager notificationManager;
   AlertView alertView = AlertView();
 
   @override
   void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _model = ScopedModel.of(context);
     _model.chairSubject.listen((newChair) {
       if (newChair) {
@@ -32,8 +35,14 @@ class _StateBoxState extends State<StateBox> {
         _model.stopMonitoring();
       }
     });
-    super.initState();
+    initNotificationManager();
     startMonitor();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   Future showOverlay(String msg) async {
@@ -53,11 +62,16 @@ class _StateBoxState extends State<StateBox> {
 
     _model.showAlert('exit');
 
-    final NotificationManager notificationManager = NotificationManager();
-    // notificationManager.init(onSelectNotification: showOverlay);
-    notificationManager.init();
-    notificationManager.show(msg, payload: time, sound: NotificationSound.beep);
+    if (!_model.hasNotificationError) {
+      notificationManager.show(msg, payload: time, sound: NotificationSound.beep);
+    }
     showOverlay(msg);
+  }
+
+  void initNotificationManager() async {
+    notificationManager = NotificationManager();
+    bool noErr = await notificationManager.init();
+    _model.setNotificationError(!noErr);
   }
 
   void startMonitor() async {
@@ -81,6 +95,7 @@ class _StateBoxState extends State<StateBox> {
     await _model.startMonitoring();
 
     _model.targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
+      if (result.error != null) return;
       final String uuid = result.region.ids[0];
       if (result.event == MonitoringState.exitOrOutside) {
         _model.deactiveChairState();
@@ -107,5 +122,18 @@ class _StateBoxState extends State<StateBox> {
         ],
       ),
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    print(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        initNotificationManager();
+        startMonitor();
+        break;
+      default:
+    }
+    super.didChangeAppLifecycleState(state);
   }
 }

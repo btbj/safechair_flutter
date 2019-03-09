@@ -2,8 +2,7 @@ import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/models/ChairState.dart';
 import 'package:beacons/beacons.dart';
-import 'package:safe_chair/models/TargetBeacon.dart';
-import 'package:safe_chair/models/NotificationManager.dart';
+import 'package:safe_chair/utils/TargetBeacon.dart';
 import 'package:rxdart/subjects.dart';
 
 mixin ChairStateMixin on Model {
@@ -16,8 +15,15 @@ mixin ChairStateMixin on Model {
   PublishSubject<String> _alertSubject = PublishSubject();
   PublishSubject<String> get alertSubject => this._alertSubject;
 
+  bool _hasBeaconError = false;
+  bool get hasBeaconError => _hasBeaconError;
+  bool _hasNotificationError = false;
+  bool get hasNotificationError => _hasNotificationError;
+
   void initTargetBeacon(String uuid) {
+    this._hasBeaconError = false;
     _targetBeacon = TargetBeacon(uuid);
+    notifyListeners();
   }
 
   Future startMonitoring() async {
@@ -26,14 +32,22 @@ mixin ChairStateMixin on Model {
     await _targetBeacon.stopMonitoring();
 
     await _targetBeacon.startMonitoring();
-    // _targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
-    //   final String uuid = result.region.ids[0];
-    //   final String eventString = result.event.toString();
-    //   checkMonitoringResult(uuid, eventString);
-    // });
+
+    _targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
+      if (result.error != null) {
+        this._hasBeaconError = true;
+      }
+      notifyListeners();
+    });
 
     await _targetBeacon.startRanging();
     _targetBeacon.rangingSubscription.onData((RangingResult result) {
+      if (result.error != null) {
+        this._hasBeaconError = true;
+        notifyListeners();
+        return;
+      }
+      if (result.beacons == null) return;
       if (result.beacons.length > 0) {
         List ids = result.beacons.first.ids;
         bool matched = _targetBeacon.uuid.toUpperCase() == ids[0];
@@ -55,26 +69,13 @@ mixin ChairStateMixin on Model {
     return;
   }
 
-  void checkMonitoringResult(String uuid, String eventString) {
-    if (_targetBeacon == null) return;
-    bool matched = _targetBeacon.uuid.toUpperCase() == uuid;
-    if (matched) {
-      print(eventString);
-      String msg = 'info: ';
-      msg += eventString;
-      msg += ' | $uuid';
-      msg += ' | ${_chairState.state}';
-      String time = DateTime.now().toString();
-      msg += ' | $time';
-
-      final NotificationManager notificationManager = NotificationManager();
-      notificationManager.init();
-      notificationManager.show(msg, payload: time);
-    }
-  }
-
   void showAlert(String alertmsg) {
     _alertSubject.add(alertmsg);
+  }
+
+  void setNotificationError(bool value) {
+    _hasNotificationError = value;
+    notifyListeners();
   }
 
   void deactiveChairState() {
