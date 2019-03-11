@@ -30,14 +30,15 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
     _model = ScopedModel.of(context);
     _model.chairSubject.listen((newChair) {
       if (newChair) {
-        initNotificationManager();
-        startMonitor();
+        pageInitialization();
       } else {
         _model.stopMonitoring();
       }
     });
-    initNotificationManager();
-    startMonitor();
+    _model.alertSubject.listen((String alertMsg) {
+      showOverlay(alertMsg);
+    });
+    pageInitialization();
   }
 
   @override
@@ -51,31 +52,19 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
     return;
   }
 
-  void checkMonitoringResult(String uuid) {
-    if (_model.targetBeacon == null) return;
-    bool matched = _model.targetBeacon.uuid.toUpperCase() == uuid;
-    if (!matched) return;
-    String msg = 'info: ';
-    msg += '$uuid';
-    msg += ' | ${_model.chairState.state}';
-    String time = DateTime.now().toString();
-    msg += ' | $time';
-
-    _model.showAlert('exit');
-
-    if (!_model.hasNotificationError) {
-      notificationManager.show(msg, payload: time, sound: NotificationSound.beep);
-    }
-    showOverlay(msg);
+  void pageInitialization() async {
+    await initNotificationManager();
+    await startMonitor();
   }
 
-  void initNotificationManager() async {
+  Future initNotificationManager() async {
     notificationManager = NotificationManager();
     bool noErr = await notificationManager.init();
     _model.setNotificationError(!noErr);
+    return;
   }
 
-  void startMonitor() async {
+  Future startMonitor() async {
     print('start monitor');
     await _model.initCurrentChair();
     await _model.initTemperatureLimit();
@@ -94,47 +83,12 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
       } else if (event.state == MonitoringState.enterOrInside) {
         notificationManager.show('进入座椅范围，打开APP检查座椅状态');
       }
-      // String msg = 'BG: ';
-      // msg += _model.currentChair.uuid;
-      // msg += ' | $uuid';
-      // if (event.state == MonitoringState.exitOrOutside) {
-      //   msg += ' | Exit';
-      //   notificationManager.show(msg);
-      // } else if (event.state == MonitoringState.enterOrInside) {
-      //   msg += ' | Enter';
-      //   notificationManager.show(msg);
-      //   notificationManager.show(msg);
-      // }
-      // if (event.type == BackgroundMonitoringEventType.didDetermineState && event.state == MonitoringState.exitOrOutside) {
-      //   _model.deactiveChairState();
-      //   checkMonitoringResult(uuid);
-      // }
-      
     });
 
     if (_model.currentChair == null) return;
     _model.initTargetBeacon(_model.currentChair.uuid);
     await _model.startMonitoring();
-
-    _model.targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
-      if (result.error != null) return;
-      final String uuid = result.region.ids[0];
-      if (_model.currentChair.uuid.toUpperCase() != uuid) return;
-      String msg = 'Monitor: ';
-      msg += _model.currentChair.uuid;
-      msg += ' | $uuid';
-      if (result.event == MonitoringState.exitOrOutside) {
-        msg += ' | Exit';
-        notificationManager.show(msg);
-      } else if (result.event == MonitoringState.enterOrInside) {
-        msg += ' | Enter';
-        notificationManager.show(msg);
-      }
-      // if (result.event == MonitoringState.exitOrOutside) {
-      //   _model.deactiveChairState();
-      //   checkMonitoringResult(uuid);
-      // }
-    });
+    return;
   }
 
   @override

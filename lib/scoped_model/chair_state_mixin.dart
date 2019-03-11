@@ -6,6 +6,7 @@ import 'package:safe_chair/utils/TargetBeacon.dart';
 import 'package:rxdart/subjects.dart';
 
 import 'package:safe_chair/store/temperatureLimitStore.dart';
+import 'package:safe_chair/utils/NotificationManager.dart';
 
 mixin ChairStateMixin on Model {
   ChairState _chairState = ChairState(0, 0);
@@ -19,6 +20,11 @@ mixin ChairStateMixin on Model {
 
   TemperatureLimit _temperatureLimit;
   TemperatureLimit get temperatureLimit => this._temperatureLimit;
+
+  Timer _errorTimer;
+  bool _hasPushedStateError = false;
+  bool _hasPushedTempError = false;
+  bool _hasPushedBatteryError = false;
 
   bool _hasBeaconError = false;
   bool get hasBeaconError => _hasBeaconError;
@@ -41,7 +47,21 @@ mixin ChairStateMixin on Model {
     _targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
       if (result.error != null) {
         this._hasBeaconError = true;
+        notifyListeners();
+        return;
       }
+      final String uuid = result.region.ids[0];
+      if (_targetBeacon.uuid.toUpperCase() != uuid) return;
+      String msg = 'Monitor: ';
+      msg += _targetBeacon.uuid;
+      msg += ' | $uuid';
+      if (result.event == MonitoringState.exitOrOutside) {
+        msg += ' | Exit';
+      } else if (result.event == MonitoringState.enterOrInside) {
+        msg += ' | Enter';
+      }
+
+      this.pushNotification(msg);
       notifyListeners();
     });
 
@@ -55,12 +75,15 @@ mixin ChairStateMixin on Model {
       if (result.beacons == null) return;
       if (result.beacons.length > 0) {
         List ids = result.beacons.first.ids;
-        bool matched = _targetBeacon.uuid.toUpperCase() == ids[0];
-        if (matched) {
-          _chairState.setValue(ids[1], ids[2]);
-          // print('${_chairState.major}, ${_chairState.minor}');
-          notifyListeners();
-        }
+        String uuid = ids[0];
+        int major = ids[1];
+        int minor = ids[2];
+        bool matched = _targetBeacon.uuid.toUpperCase() == uuid;
+        if (!matched) return;
+        if (_chairState.major == major && _chairState.minor == minor) return;
+        _chairState.setValue(ids[1], ids[2]);
+        checkChairState();
+        notifyListeners();
       }
     });
     return;
@@ -101,5 +124,61 @@ mixin ChairStateMixin on Model {
     this._temperatureLimit = limit;
     notifyListeners();
     return;
+  }
+
+  void pushNotification(String msg) async {
+    NotificationManager nm = NotificationManager();
+    bool noErr = await nm.init();
+    if (noErr) {
+      nm.show(msg, sound: NotificationSound.beep);
+    }
+  }
+
+  void checkChairState() {
+    if (this._errorTimer != null) this._errorTimer.cancel();
+    if (this._chairState.state != '111111' && !this._hasPushedStateError) {
+      this._errorTimer = Timer(Duration(seconds: 10), () async {
+        this._hasPushedStateError = true;
+        String msg = '座椅安装不到位';
+        this.pushNotification(msg);
+        this.showAlert(msg);
+      });
+    }
+    if (this._chairState.state == '111111') {
+      this._hasPushedStateError = false;
+    }
+
+    if (this._chairState.battery < 10 && !this._hasPushedBatteryError) {
+      this._hasPushedBatteryError = true;
+      String msg = '座椅电量过低';
+      this.pushNotification(msg);
+      this.showAlert(msg);
+    }
+
+    if (this.temperatureLimit != null) {
+      if (this.temperatureLimit.highSwitch &&
+          this.temperatureLimit.high < this._chairState.temprature &&
+          !this._hasPushedTempError) {
+        this._hasPushedTempError = true;
+        String msg = '座椅温度过高';
+        this.pushNotification(msg);
+        this.showAlert(msg);
+      } // 高温报警
+
+      if (this.temperatureLimit.lowSwitch &&
+          this.temperatureLimit.low > this._chairState.temprature &&
+          !this._hasPushedTempError) {
+        this._hasPushedTempError = true;
+        String msg = '座椅温度过低';
+        this.pushNotification(msg);
+        this.showAlert(msg);
+      } // 低温报警
+
+      if (this.temperatureLimit.low < this._chairState.temprature &&
+          this.temperatureLimit.high > this._chairState.temprature &&
+          this._hasPushedTempError) {
+        this._hasPushedTempError = false;
+      } // 温度正常后重置警报
+    }
   }
 }
