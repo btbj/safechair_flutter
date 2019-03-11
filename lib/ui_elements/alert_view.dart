@@ -5,8 +5,9 @@ class AlertView {
   String msg;
 
   Future show(BuildContext context, String msg) {
-    Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
-    
+    Navigator.popUntil(
+        context, ModalRoute.withName(Navigator.defaultRouteName));
+
     this.msg = msg;
     return showDialog(
       context: context,
@@ -54,22 +55,22 @@ class AlertDialogBox extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width - 20,
                   child: SimpleDialog(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                    title: Text('alert'),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 25),
+                    title: Text('警告'),
                     children: <Widget>[
                       Container(
                         width: 250,
-                        color: Colors.red,
+                        margin: EdgeInsets.symmetric(vertical: 15),
                         child: Text(msg, softWrap: true),
                       ),
                       RaisedButton(
-                        child: Text('close'),
+                        child: Text('确定'),
                         onPressed: () {
                           print('alert close');
                           Navigator.of(context).pop();
                         },
                       ),
+                      SizedBox(height: 15),
                     ],
                   ),
                 ),
