@@ -5,6 +5,8 @@ import 'package:beacons/beacons.dart';
 import 'package:safe_chair/utils/TargetBeacon.dart';
 import 'package:rxdart/subjects.dart';
 
+import 'package:safe_chair/store/temperatureLimitStore.dart';
+
 mixin ChairStateMixin on Model {
   ChairState _chairState = ChairState(0, 0);
   ChairState get chairState => _chairState;
@@ -14,6 +16,9 @@ mixin ChairStateMixin on Model {
 
   PublishSubject<String> _alertSubject = PublishSubject();
   PublishSubject<String> get alertSubject => this._alertSubject;
+
+  TemperatureLimit _temperatureLimit;
+  TemperatureLimit get temperatureLimit => this._temperatureLimit;
 
   bool _hasBeaconError = false;
   bool get hasBeaconError => _hasBeaconError;
@@ -81,5 +86,20 @@ mixin ChairStateMixin on Model {
   void deactiveChairState() {
     _chairState.deactive();
     notifyListeners();
+  }
+
+  Future initTemperatureLimit() async {
+    print('init temperature limit');
+    this._temperatureLimit = await TemperatureLimitStore.getLimit();
+    notifyListeners();
+    return;
+  }
+
+  Future setTemperatureLimit(TemperatureLimit limit) async {
+    print('set temperature limit');
+    await TemperatureLimitStore.saveLimit(limit);
+    this._temperatureLimit = limit;
+    notifyListeners();
+    return;
   }
 }

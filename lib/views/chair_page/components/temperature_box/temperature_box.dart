@@ -39,7 +39,7 @@ class TemperatureBox extends StatelessWidget {
             SizedBox(height: 10),
             ProgressArc(progress: getProgress(temperature)),
             SizedBox(height: 20),
-            TemperatureTextBox(temperature),
+            TemperatureTextBox(temperature, model.temperatureLimit == null ? false : model.temperatureLimit.isF),
           ],
         ),
       );
