@@ -52,16 +52,20 @@ mixin ChairStateMixin on Model {
       }
       final String uuid = result.region.ids[0];
       if (_targetBeacon.uuid.toUpperCase() != uuid) return;
-      String msg = 'Monitor: ';
-      msg += _targetBeacon.uuid;
-      msg += ' | $uuid';
-      if (result.event == MonitoringState.exitOrOutside) {
-        msg += ' | Exit';
-      } else if (result.event == MonitoringState.enterOrInside) {
-        msg += ' | Enter';
+      // String msg = 'Monitor: ';
+      // msg += _targetBeacon.uuid;
+      // msg += ' | $uuid';
+      // if (result.event == MonitoringState.exitOrOutside) {
+      //   msg += ' | Exit';
+      // } else if (result.event == MonitoringState.enterOrInside) {
+      //   msg += ' | Enter';
+      // }
+      // this.pushNotification(msg);
+      if (result.event ==MonitoringState.exitOrOutside && this._chairState.pad) {
+        String msg = '您已经离开安全座椅，宝宝还在座位上， 请确认儿童是否离座！';
+        this.pushNotification(msg);
       }
 
-      this.pushNotification(msg);
       notifyListeners();
     });
 
@@ -139,7 +143,7 @@ mixin ChairStateMixin on Model {
     if (this._chairState.state != '111111' && !this._hasPushedStateError) {
       this._errorTimer = Timer(Duration(seconds: 10), () async {
         this._hasPushedStateError = true;
-        String msg = '座椅安装不到位';
+        String msg = '座椅安装不到位，请检查所有安装项！';
         this.pushNotification(msg);
         this.showAlert(msg);
       });
@@ -150,7 +154,7 @@ mixin ChairStateMixin on Model {
 
     if (this._chairState.battery < 10 && !this._hasPushedBatteryError) {
       this._hasPushedBatteryError = true;
-      String msg = '座椅电量过低';
+      String msg = '座椅电量过低，请更换座椅电池！';
       this.pushNotification(msg);
       this.showAlert(msg);
     }
@@ -160,7 +164,7 @@ mixin ChairStateMixin on Model {
           this.temperatureLimit.high < this._chairState.temprature &&
           !this._hasPushedTempError) {
         this._hasPushedTempError = true;
-        String msg = '座椅温度过高';
+        String msg = '座椅温度过高，请确认车内环境！';
         this.pushNotification(msg);
         this.showAlert(msg);
       } // 高温报警
@@ -169,7 +173,7 @@ mixin ChairStateMixin on Model {
           this.temperatureLimit.low > this._chairState.temprature &&
           !this._hasPushedTempError) {
         this._hasPushedTempError = true;
-        String msg = '座椅温度过低';
+        String msg = '座椅温度过低，请确认车内环境！';
         this.pushNotification(msg);
         this.showAlert(msg);
       } // 低温报警
