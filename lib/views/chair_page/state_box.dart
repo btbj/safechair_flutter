@@ -80,6 +80,7 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
       if (event.type != BackgroundMonitoringEventType.didDetermineState) return;
       if (event.state == MonitoringState.exitOrOutside) {
         notificationManager.show('退出座椅范围，请检查座椅状态');
+        _model.deactiveChairState();
       } else if (event.state == MonitoringState.enterOrInside) {
         notificationManager.show('进入座椅范围，打开APP检查座椅状态');
       }

@@ -64,6 +64,11 @@ mixin ChairStateMixin on Model {
       if (result.event ==MonitoringState.exitOrOutside && this._chairState.pad) {
         String msg = '您已经离开安全座椅，宝宝还在座位上， 请确认儿童是否离座！';
         this.pushNotification(msg);
+        this.showAlert(msg);
+      }
+
+      if (result.event ==MonitoringState.exitOrOutside) {
+        this.deactiveChairState();
       }
 
       notifyListeners();
