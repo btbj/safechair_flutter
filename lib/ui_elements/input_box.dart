@@ -6,6 +6,7 @@ class InputBox extends StatelessWidget {
   final bool obscureText;
   final TextEditingController controller;
   final Widget suffix;
+  final Function onChanged;
 
   InputBox({
     this.controller,
@@ -13,6 +14,7 @@ class InputBox extends StatelessWidget {
     this.hintText,
     this.obscureText = false,
     this.suffix,
+    this.onChanged,
   });
 
   @override
@@ -41,6 +43,7 @@ class InputBox extends StatelessWidget {
                   hintText: hintText,
                   hintStyle: TextStyle(color: Colors.grey, fontSize: fontSize)),
               obscureText: obscureText,
+              onChanged: onChanged == null ? (_) {} : onChanged,
             ),
           ),
           hasSuffix ? suffix : Container()

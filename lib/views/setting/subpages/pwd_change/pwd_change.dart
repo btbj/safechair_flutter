@@ -3,6 +3,9 @@ import 'package:safe_chair/ui_elements/basic_plate.dart';
 import 'package:safe_chair/ui_elements/basic_btn.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/scoped_model/main.dart';
+import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/ui_elements/toast.dart';
+import 'package:safe_chair/models/User.dart';
 
 class PwdChangePage extends StatefulWidget {
   @override
@@ -12,8 +15,8 @@ class PwdChangePage extends StatefulWidget {
 class _PwdChangePageState extends State<PwdChangePage> {
   MainModel _model;
   String usernameString = 'aaa@aaa.aaa';
-  TextEditingController pwdCtr =TextEditingController();
-  TextEditingController pwd2Ctr =TextEditingController();
+  TextEditingController pwdCtr = TextEditingController();
+  TextEditingController pwd2Ctr = TextEditingController();
 
   @override
   void initState() {
@@ -28,11 +31,38 @@ class _PwdChangePageState extends State<PwdChangePage> {
   }
 
   Widget _buildChangeBtn() {
-    Function onTap = () {
-      print('change pwd');
-    };
-    if (pwdCtr.text !=pwd2Ctr.text) {
-      onTap = null;
+    Function onTap;
+    if (pwdCtr.text == pwd2Ctr.text && pwdCtr.text.isNotEmpty) {
+      onTap = () async {
+        print('change');
+        print(_model.authUser.token);
+        try {
+          final Map<String, dynamic> response = await api.post(
+            context,
+            api: '/user/do_change_pwd',
+            body: {
+              'token': _model.authUser.token,
+              'new_pwd': pwdCtr.text,
+            },
+          );
+          print('r: $response');
+
+          User newUser = User(
+            id: _model.authUser.id,
+            token: _model.authUser.token,
+            username: _model.authUser.username,
+            password: pwdCtr.text,
+          );
+
+          await _model.setUser(newUser);
+
+          Toast.show(context, response['message']);
+          Navigator.pop(context);
+        } catch (e) {
+          print(e);
+          Toast.show(context, e);
+        }
+      };
     }
     return BasicBtn(
       label: '修改',
@@ -57,7 +87,8 @@ class _PwdChangePageState extends State<PwdChangePage> {
     );
   }
 
-  Widget _buildPasswordLine({String label, String hintText, TextEditingController ctrl}) {
+  Widget _buildPasswordLine(
+      {String label, String hintText, TextEditingController ctrl}) {
     final Color primaryColor = Theme.of(context).primaryColor;
     return ListTile(
       title: Row(
@@ -77,6 +108,9 @@ class _PwdChangePageState extends State<PwdChangePage> {
               cursorColor: primaryColor,
               style: TextStyle(color: Colors.white),
               obscureText: true,
+              onChanged: (_) {
+                setState(() {});
+              },
             ),
           ),
         ],
@@ -90,6 +124,7 @@ class _PwdChangePageState extends State<PwdChangePage> {
       child: Divider(color: Colors.grey),
     );
   }
+
   Widget _buildForm() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15),

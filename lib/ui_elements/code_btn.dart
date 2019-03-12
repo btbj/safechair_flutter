@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/ui_elements/toast.dart';
 
 class CodeBtn extends StatefulWidget {
-  final TextEditingController controller;
-  final int countdown;
-  CodeBtn({this.controller, this.countdown = 5});
+  final String username;
+  final int countSeconds;
+  CodeBtn({this.username, this.countSeconds = 120});
 
   @override
   _CodeBtnState createState() => _CodeBtnState();
@@ -12,62 +14,73 @@ class CodeBtn extends StatefulWidget {
 
 class _CodeBtnState extends State<CodeBtn> {
   Timer _timer;
-  int _seconds;
-  bool _counting = false;
-  String _verifyStr = '获取验证码';
-
-  @override
-  void initState() {
-    super.initState();
-    _seconds = widget.countdown;
-    print(_seconds);
-  }
-
-  void callback() {
-    print('55555');
-    _timer.cancel();
-    _timer = null;
-  }
+  int _seconds = 0;
+  bool _isCounting = false;
+  String _btnText = '获取验证码';
 
   void startTimer() {
+    // 初始化
+    _isCounting = true;
+    _seconds = widget.countSeconds;
+    _btnText = _seconds.toString() + 's后获取';
+    setState(() {});
+    // 定时操作
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_seconds == 0) {
-        _cancelTimer();
-        _seconds = widget.countdown;
-        setState(() {});
-        return;
-      }
       _seconds--;
-      _verifyStr = _seconds.toString() + 's后获取';
+      _btnText = _seconds.toString() + 's后获取';
       setState(() {});
       if (_seconds == 0) {
-        _verifyStr = '获取验证码';
-        _counting = false;
+        _cancelTimer();
+        setState(() {});
       }
     });
   }
 
   void _cancelTimer() {
+    _seconds = 0;
+    _btnText = '获取验证码';
+    _isCounting = false;
     _timer?.cancel();
+  }
+
+  bool usernameCheck(String username) {
+    if (username.isEmpty) return false;
+    RegExp regExp =
+        RegExp(r'^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}$');
+    bool hasMatch = regExp.hasMatch(username);
+    return hasMatch;
+  }
+
+  void requestCode(String username) async {
+    try {
+      final Map<String, dynamic> response = await api.post(
+        context,
+        api: '/user/send_email',
+        body: {'username': username},
+      );
+      print('r: $response');
+
+      Toast.show(context, response['message']);
+    } catch (e) {
+      print(e);
+      Toast.show(context, e);
+      _cancelTimer();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
-    var onPressed =
-        widget.controller.text.length > 5 && !_counting
-            ? () {
-                print('get code');
-                startTimer();
-                _verifyStr = _seconds.toString() + 's后获取';
-                setState(() {
-                  _counting = true;
-                });
-              }
-            : null;
+    Function onPressed;
+    if (usernameCheck(widget.username) && !_isCounting) {
+      onPressed = () {
+        requestCode(widget.username);
+        startTimer();
+      };
+    }
 
     return FlatButton(
-      child: Text(_verifyStr),
+      child: Text(_btnText),
       onPressed: onPressed,
       color: primaryColor,
       disabledColor: Colors.grey,
@@ -79,5 +92,11 @@ class _CodeBtnState extends State<CodeBtn> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _cancelTimer();
+    super.dispose();
   }
 }

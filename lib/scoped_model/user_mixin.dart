@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:rxdart/subjects.dart';
@@ -20,6 +21,14 @@ mixin UserMixin on Model {
     await UserStore.saveUser(user);
     _authSubject.add(true);
     notifyListeners();
+  }
+
+  Future setUser(User user) async {
+    print('setUser');
+    _authUser = user;
+    await UserStore.saveUser(user);
+    notifyListeners();
+    return;
   }
 
   void logout(BuildContext context) async {
