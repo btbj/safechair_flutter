@@ -2,72 +2,58 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class CodeBtn extends StatefulWidget {
-  final TextEditingController controller;
-  final int countdown;
-  CodeBtn({this.controller, this.countdown = 5});
+  final String username;
+  final int countSeconds;
+  CodeBtn({this.username, this.countSeconds = 5});
 
   @override
   _CodeBtnState createState() => _CodeBtnState();
 }
 
 class _CodeBtnState extends State<CodeBtn> {
-  Timer _timer;
-  int _seconds;
-  bool _counting = false;
-  String _verifyStr = '获取验证码';
-
-  @override
-  void initState() {
-    super.initState();
-    _seconds = widget.countdown;
-    print(_seconds);
-  }
-
-  void callback() {
-    print('55555');
-    _timer.cancel();
-    _timer = null;
-  }
+  int _seconds = 0;
+  bool _isCounting = false;
+  String _btnText = '获取验证码';
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_seconds == 0) {
-        _cancelTimer();
-        _seconds = widget.countdown;
-        setState(() {});
-        return;
-      }
+    // 初始化
+    _isCounting = true;
+    _seconds = widget.countSeconds;
+    _btnText = _seconds.toString() + 's后获取';
+    setState(() {});
+    // 定时操作
+    Timer.periodic(Duration(seconds: 1), (timer) {
       _seconds--;
-      _verifyStr = _seconds.toString() + 's后获取';
-      setState(() {});
+      _btnText = _seconds.toString() + 's后获取';
       if (_seconds == 0) {
-        _verifyStr = '获取验证码';
-        _counting = false;
+        timer.cancel();
+        _btnText = '获取验证码';
+        _isCounting = false;
       }
+      setState(() {});
     });
   }
 
-  void _cancelTimer() {
-    _timer?.cancel();
+  bool usernameCheck(String username) {
+    if (username.isEmpty) return false;
+    RegExp regExp =
+        RegExp(r'^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}$');
+    bool hasMatch = regExp.hasMatch(username);
+    return hasMatch;
   }
 
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
-    var onPressed =
-        widget.controller.text.length > 5 && !_counting
-            ? () {
-                print('get code');
-                startTimer();
-                _verifyStr = _seconds.toString() + 's后获取';
-                setState(() {
-                  _counting = true;
-                });
-              }
-            : null;
+    Function onPressed;
+    if (usernameCheck(widget.username) && !_isCounting) {
+      onPressed = () {
+        startTimer();
+      };
+    }
 
     return FlatButton(
-      child: Text(_verifyStr),
+      child: Text(_btnText),
       onPressed: onPressed,
       color: primaryColor,
       disabledColor: Colors.grey,

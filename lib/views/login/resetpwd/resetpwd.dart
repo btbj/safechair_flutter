@@ -27,7 +27,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
     return InputBox(
       controller: usernameCtr,
       icon: Icons.email,
-      hintText: '请输入手机号/邮箱',
+      hintText: '请输入邮箱',
     );
   }
 
@@ -41,7 +41,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
   }
 
   Widget _buildGetCodeBtn() {
-    return CodeBtn(controller: usernameCtr);
+    return CodeBtn(username: usernameCtr.text);
   }
 
   Widget _buildPasswordTextField() {

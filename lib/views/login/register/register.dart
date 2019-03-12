@@ -17,6 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController usernameCtr = TextEditingController();
   final TextEditingController codeCtr = TextEditingController();
   final TextEditingController passwordCtr = TextEditingController();
+  String usernameForCode = '';
 
   Widget _buildTitle() {
     Color primaryColor = Theme.of(context).primaryColor;
@@ -30,7 +31,12 @@ class _RegisterPageState extends State<RegisterPage> {
     return InputBox(
       controller: usernameCtr,
       icon: Icons.email,
-      hintText: '请输入手机号/邮箱',
+      hintText: '请输入邮箱',
+      onChanged: (value) {
+        setState(() {
+          usernameForCode = value;
+        });
+      },
     );
   }
 
@@ -44,7 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _buildGetCodeBtn() {
-    return CodeBtn(controller: usernameCtr);
+    return CodeBtn(username: usernameForCode);
   }
 
   Widget _buildPasswordTextField() {

@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     return InputBox(
       controller: usernameCtr,
       icon: Icons.person_outline,
-      hintText: '请输入手机号/邮箱',
+      hintText: '请输入邮箱',
     );
   }
 
