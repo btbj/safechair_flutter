@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     return InputBox(
       controller: usernameCtr,
       icon: Icons.person_outline,
-      hintText: '请输入邮箱',
+      hintText: CustomLocalizations.of(context).message('email_hint'),
     );
   }
 
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     return InputBox(
       controller: passwordCtr,
       icon: Icons.lock_outline,
-      hintText: '请输入密码',
+      hintText: CustomLocalizations.of(context).message('password_hint'),
       obscureText: true,
     );
   }
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildRegisterBtn() {
     return GestureDetector(
       child: Text(
-        '用户注册',
+        CustomLocalizations.of(context).system('register_nav_text'),
         style: TextStyle(color: Theme.of(context).primaryColor),
       ),
       onTap: () {
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildResetPwdBtn() {
     return GestureDetector(
       child: Text(
-        '忘记密码',
+        CustomLocalizations.of(context).system('resetpwd_nav_text'),
         style: TextStyle(color: Theme.of(context).primaryColor),
       ),
       onTap: () {
@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildLoginBtn() {
     return BasicBtn(
-      label: CustomLocalizations.of(context).loginBtnText,
+      label: CustomLocalizations.of(context).system('login_btn_text'),
       onTap: () async {
         print('username: ${usernameCtr.text}');
         print('password: ${passwordCtr.text}');
@@ -153,12 +153,12 @@ class _LoginPageState extends State<LoginPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          '登录即代表阅读并同意',
+          CustomLocalizations.of(context).message('login_to_agree'),
           style: TextStyle(color: Colors.grey[700], fontSize: 12),
         ),
         GestureDetector(
           child: Text(
-            '服务条款',
+            CustomLocalizations.of(context).system('policy_nav_text'),
             style:
                 TextStyle(color: Theme.of(context).primaryColor, fontSize: 12),
           ),

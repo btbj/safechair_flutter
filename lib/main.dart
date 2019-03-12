@@ -18,12 +18,18 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   MainModel _model;
-  GlobalKey<FreeLocalizationsState> freeLocalizationStateKey;
+  Locale _locale;
+
   @override
   void initState() {
     _model = MainModel();
-    freeLocalizationStateKey = _model.createFreeLocalizationStateKey();
     print('init model');
+    _locale = Locale('zh');
+    _model.localeSubject.listen((newLocale) {
+      setState(() {
+        _locale = newLocale;
+      });
+    });
     super.initState();
   }
 
@@ -40,34 +46,26 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     print('build app');
     setStatusBarBrightness();
-    
 
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(
         onGenerateTitle: (context) {
-          return CustomLocalizations.of(context).appTitle;
+          return CustomLocalizations.of(context).system('app_title');
         },
         theme: ThemeData(
           primaryColor: Color.fromARGB(255, 217, 132, 44),
         ),
-        // home: RootPage(),
-        home: Builder(
-          builder: (context) {
-            return FreeLocalizations(
-              key: freeLocalizationStateKey,
-              child: RootPage(),
-            );
-          },
-        ),
+        home: RootPage(),
+        locale: _locale,
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           CustomLocalizaionsDelegate.delegate,
         ],
         supportedLocales: [
-          const Locale('zh', 'CH'),
-          const Locale('en', 'US'),
+          const Locale('zh'),
+          const Locale('en'),
         ],
       ),
     );

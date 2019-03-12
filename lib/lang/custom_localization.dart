@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'dart:async';
+import './resource/en.dart' as en;
+import './resource/zh.dart' as zh;
 
 class CustomLocalizations {
   final Locale locale;
 
   CustomLocalizations(this.locale);
 
-  static Map<String, Map<String, String>> _localizedValues = {
-    'en': {
-      'app_title': 'Welldon',
-      'login_btn_text': 'Login',
-    },
-    'zh': {
-      'app_title': '惠尔顿',
-      'login_btn_text': '登录',
-    }
+  static Map<String, Map<String, Map<String, String>>> _localizedValues = {
+    'en': en.resource,
+    'zh': zh.resource,
   };
 
-  String get appTitle {
-    return _localizedValues[locale.languageCode]['app_title'];
+  String system(String key) {
+    return _localizedValues[locale.languageCode]['system'][key];
   }
 
-  String get loginBtnText {
-    return _localizedValues[locale.languageCode]['login_btn_text'];
+  String message(String key) {
+    return _localizedValues[locale.languageCode]['message'][key];
   }
 
   static CustomLocalizations of(BuildContext context) {
@@ -52,31 +48,4 @@ class CustomLocalizaionsDelegate
 
   static CustomLocalizaionsDelegate delegate =
       const CustomLocalizaionsDelegate();
-}
-
-class FreeLocalizations extends StatefulWidget {
-  final Widget child;
-  FreeLocalizations({Key key, this.child}) : super(key: key);
-
-  @override
-  FreeLocalizationsState createState() => FreeLocalizationsState();
-}
-
-class FreeLocalizationsState extends State<FreeLocalizations> {
-  Locale _locale = const Locale('zh', 'CH');
-
-  void changeLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Localizations.override(
-      context: context,
-      locale: _locale,
-      child: widget.child,
-    );
-  }
 }
