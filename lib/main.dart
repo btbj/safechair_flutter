@@ -16,11 +16,16 @@ class MyApp extends StatefulWidget {
   }
 }
 
-GlobalKey<FreeLocalizationsState> freeLocalizationStateKey =
-    GlobalKey<FreeLocalizationsState>();
-
 class MyAppState extends State<MyApp> {
-  final MainModel _model = MainModel();
+  MainModel _model;
+  GlobalKey<FreeLocalizationsState> freeLocalizationStateKey;
+  @override
+  void initState() {
+    _model = MainModel();
+    freeLocalizationStateKey = _model.createFreeLocalizationStateKey();
+    print('init model');
+    super.initState();
+  }
 
   void setStatusBarBrightness() {
     SystemChrome.setSystemUIOverlayStyle(
@@ -33,7 +38,9 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print('build app');
     setStatusBarBrightness();
+    
 
     return ScopedModel<MainModel>(
       model: _model,

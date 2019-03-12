@@ -64,7 +64,8 @@ class FreeLocalizations extends StatefulWidget {
 
 class FreeLocalizationsState extends State<FreeLocalizations> {
   Locale _locale = const Locale('zh', 'CH');
-  changeLocale(Locale locale) {
+
+  void changeLocale(Locale locale) {
     setState(() {
       _locale = locale;
     });
