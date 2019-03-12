@@ -121,11 +121,14 @@ class _LoginPageState extends State<LoginPage> {
         if (passwordCtr.text.isEmpty || usernameCtr.text.isEmpty) return;
 
         try {
-          final Map<String, dynamic> response =
-              await api.post(context, api: '/user/do_login', body: {
-            'username': usernameCtr.text,
-            'password': passwordCtr.text,
-          });
+          final Map<String, dynamic> response = await api.post(
+            context,
+            api: '/user/do_login',
+            body: {
+              'username': usernameCtr.text,
+              'password': passwordCtr.text,
+            },
+          );
           print('r: $response');
 
           final User newUser = User(

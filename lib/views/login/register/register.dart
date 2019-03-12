@@ -6,6 +6,8 @@ import 'package:safe_chair/ui_elements/code_btn.dart';
 import 'package:safe_chair/utils/nav_manager.dart';
 
 import 'package:safe_chair/views/policy/service_policy.dart';
+import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/ui_elements/toast.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -58,6 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: passwordCtr,
       icon: Icons.lock_open,
       hintText: '请输入密码',
+      obscureText: true,
     );
   }
 
@@ -83,10 +86,32 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildRegisterBtn() {
     return BasicBtn(
       label: '加入',
-      onTap: () {
+      onTap: () async {
         print('username: ${usernameCtr.text}');
         print('code: ${codeCtr.text}');
         print('password: ${passwordCtr.text}');
+
+        if (passwordCtr.text.isEmpty ||
+            usernameCtr.text.isEmpty ||
+            codeCtr.text.isEmpty) return;
+        try {
+          final Map<String, dynamic> response = await api.post(
+            context,
+            api: '/user/do_reg',
+            body: {
+              'username': usernameCtr.text,
+              'password': passwordCtr.text,
+              'code': codeCtr.text,
+            },
+          );
+          print('r: $response');
+
+          Toast.show(context, response['message']);
+          Navigator.pop(context);
+        } catch (e) {
+          print(e);
+          Toast.show(context, e);
+        }
       },
     );
   }

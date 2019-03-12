@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/ui_elements/toast.dart';
 
 class CodeBtn extends StatefulWidget {
   final String username;
   final int countSeconds;
-  CodeBtn({this.username, this.countSeconds = 5});
+  CodeBtn({this.username, this.countSeconds = 120});
 
   @override
   _CodeBtnState createState() => _CodeBtnState();
 }
 
 class _CodeBtnState extends State<CodeBtn> {
+  Timer _timer;
   int _seconds = 0;
   bool _isCounting = false;
   String _btnText = '获取验证码';
@@ -22,16 +25,22 @@ class _CodeBtnState extends State<CodeBtn> {
     _btnText = _seconds.toString() + 's后获取';
     setState(() {});
     // 定时操作
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _seconds--;
       _btnText = _seconds.toString() + 's后获取';
-      if (_seconds == 0) {
-        timer.cancel();
-        _btnText = '获取验证码';
-        _isCounting = false;
-      }
       setState(() {});
+      if (_seconds == 0) {
+        _cancelTimer();
+        setState(() {});
+      }
     });
+  }
+
+  void _cancelTimer() {
+    _seconds = 0;
+    _btnText = '获取验证码';
+    _isCounting = false;
+    _timer?.cancel();
   }
 
   bool usernameCheck(String username) {
@@ -42,12 +51,30 @@ class _CodeBtnState extends State<CodeBtn> {
     return hasMatch;
   }
 
+  void requestCode(String username) async {
+    try {
+      final Map<String, dynamic> response = await api.post(
+        context,
+        api: '/user/send_email',
+        body: {'username': username},
+      );
+      print('r: $response');
+
+      Toast.show(context, response['message']);
+    } catch (e) {
+      print(e);
+      Toast.show(context, e);
+      _cancelTimer();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
     Function onPressed;
     if (usernameCheck(widget.username) && !_isCounting) {
       onPressed = () {
+        requestCode(widget.username);
         startTimer();
       };
     }
@@ -65,5 +92,11 @@ class _CodeBtnState extends State<CodeBtn> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _cancelTimer();
+    super.dispose();
   }
 }

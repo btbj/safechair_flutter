@@ -4,6 +4,9 @@ import 'package:safe_chair/ui_elements/input_box.dart';
 import 'package:safe_chair/ui_elements/basic_btn.dart';
 import 'package:safe_chair/ui_elements/code_btn.dart';
 
+import 'package:safe_chair/services/api.dart' as api;
+import 'package:safe_chair/ui_elements/toast.dart';
+
 class ResetpwdPage extends StatefulWidget {
   @override
   _ResetpwdPageState createState() => _ResetpwdPageState();
@@ -14,6 +17,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
   final TextEditingController usernameCtr = TextEditingController();
   final TextEditingController codeCtr = TextEditingController();
   final TextEditingController passwordCtr = TextEditingController();
+  String usernameForCode = '';
 
   // Widget _buildTitle() {
   //   Color primaryColor = Theme.of(context).primaryColor;
@@ -28,6 +32,11 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
       controller: usernameCtr,
       icon: Icons.email,
       hintText: '请输入邮箱',
+      onChanged: (value) {
+        setState(() {
+          usernameForCode = value;
+        });
+      },
     );
   }
 
@@ -41,7 +50,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
   }
 
   Widget _buildGetCodeBtn() {
-    return CodeBtn(username: usernameCtr.text);
+    return CodeBtn(username: usernameForCode);
   }
 
   Widget _buildPasswordTextField() {
@@ -49,6 +58,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
       controller: passwordCtr,
       icon: Icons.lock_open,
       hintText: '请输入密码',
+      obscureText: true,
     );
   }
 
@@ -71,6 +81,39 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
     );
   }
 
+  Widget _buildResetBtn() {
+    return BasicBtn(
+      label: '完成',
+      onTap: () async {
+        print('username: ${usernameCtr.text}');
+        print('code: ${codeCtr.text}');
+        print('password: ${passwordCtr.text}');
+
+        if (passwordCtr.text.isEmpty ||
+            usernameCtr.text.isEmpty ||
+            codeCtr.text.isEmpty) return;
+        try {
+          final Map<String, dynamic> response = await api.post(
+            context,
+            api: '/user/do_reset_pwd',
+            body: {
+              'username': usernameCtr.text,
+              'password': passwordCtr.text,
+              'code': codeCtr.text,
+            },
+          );
+          print('r: $response');
+
+          Toast.show(context, response['message']);
+          Navigator.pop(context);
+        } catch (e) {
+          print(e);
+          Toast.show(context, e);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BasicPlate(
@@ -83,14 +126,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
           SizedBox(height: 20),
           _buildRegisterForm(),
           SizedBox(height: 20),
-          BasicBtn(
-            label: '完成',
-            onTap: () {
-              print('username: ${usernameCtr.text}');
-              print('code: ${codeCtr.text}');
-              print('password: ${passwordCtr.text}');
-            },
-          ),
+          _buildResetBtn(),
         ],
       ),
     );
