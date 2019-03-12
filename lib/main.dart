@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/services.dart';
 
@@ -13,6 +15,9 @@ class MyApp extends StatefulWidget {
     return new MyAppState();
   }
 }
+
+GlobalKey<FreeLocalizationsState> freeLocalizationStateKey =
+    GlobalKey<FreeLocalizationsState>();
 
 class MyAppState extends State<MyApp> {
   final MainModel _model = MainModel();
@@ -33,11 +38,30 @@ class MyAppState extends State<MyApp> {
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        onGenerateTitle: (context) {
+          return CustomLocalizations.of(context).appTitle;
+        },
         theme: ThemeData(
           primaryColor: Color.fromARGB(255, 217, 132, 44),
         ),
-        home: RootPage(),
+        // home: RootPage(),
+        home: Builder(
+          builder: (context) {
+            return FreeLocalizations(
+              key: freeLocalizationStateKey,
+              child: RootPage(),
+            );
+          },
+        ),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          CustomLocalizaionsDelegate.delegate,
+        ],
+        supportedLocales: [
+          const Locale('zh', 'CH'),
+          const Locale('en', 'US'),
+        ],
       ),
     );
   }

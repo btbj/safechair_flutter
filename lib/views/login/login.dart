@@ -15,6 +15,8 @@ import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/ui_elements/toast.dart';
 import 'package:safe_chair/models/User.dart';
 
+import 'package:safe_chair/lang/custom_localization.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -114,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildLoginBtn() {
     return BasicBtn(
-      label: '登录',
+      label: CustomLocalizations.of(context).loginBtnText,
       onTap: () async {
         print('username: ${usernameCtr.text}');
         print('password: ${passwordCtr.text}');
