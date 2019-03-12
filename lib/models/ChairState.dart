@@ -34,7 +34,7 @@ class ChairState {
     routation = (stateInt >> 2) % 2 == 1;
     pad = (stateInt >> 1) % 2 == 1;
     leg = stateInt % 2 == 1;
-    print('buckle: $buckle | lfix: $lfix | rfix: $rfix | routation: $routation | pad: $pad | leg: $leg');
+    // print('buckle: $buckle | lfix: $lfix | rfix: $rfix | routation: $routation | pad: $pad | leg: $leg');
   }
 
   void deactive() {

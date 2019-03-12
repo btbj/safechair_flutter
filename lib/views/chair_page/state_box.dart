@@ -11,29 +11,40 @@ import './components/battery_box/battery_box.dart';
 import 'package:safe_chair/ui_elements/alert_view.dart';
 
 import 'package:beacons/beacons.dart';
-import 'package:safe_chair/models/NotificationManager.dart';
+import 'package:safe_chair/utils/NotificationManager.dart';
 
 class StateBox extends StatefulWidget {
   @override
   _StateBoxState createState() => _StateBoxState();
 }
 
-class _StateBoxState extends State<StateBox> {
+class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
   MainModel _model;
+  NotificationManager notificationManager;
   AlertView alertView = AlertView();
 
   @override
   void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _model = ScopedModel.of(context);
     _model.chairSubject.listen((newChair) {
       if (newChair) {
-        startMonitor();
+        pageInitialization();
       } else {
         _model.stopMonitoring();
       }
     });
-    super.initState();
-    startMonitor();
+    _model.alertSubject.listen((String alertMsg) {
+      showOverlay(alertMsg);
+    });
+    pageInitialization();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   Future showOverlay(String msg) async {
@@ -41,52 +52,44 @@ class _StateBoxState extends State<StateBox> {
     return;
   }
 
-  void checkMonitoringResult(String uuid) {
-    if (_model.targetBeacon == null) return;
-    bool matched = _model.targetBeacon.uuid.toUpperCase() == uuid;
-    if (!matched) return;
-    String msg = 'info: ';
-    msg += '$uuid';
-    msg += ' | ${_model.chairState.state}';
-    String time = DateTime.now().toString();
-    msg += ' | $time';
-
-    _model.showAlert('exit');
-
-    final NotificationManager notificationManager = NotificationManager();
-    // notificationManager.init(onSelectNotification: showOverlay);
-    notificationManager.init();
-    notificationManager.show(msg, payload: time, sound: NotificationSound.beep);
-    showOverlay(msg);
+  void pageInitialization() async {
+    await initNotificationManager();
+    await startMonitor();
   }
 
-  void startMonitor() async {
+  Future initNotificationManager() async {
+    notificationManager = NotificationManager();
+    bool noErr = await notificationManager.init();
+    _model.setNotificationError(!noErr);
+    return;
+  }
+
+  Future startMonitor() async {
     print('start monitor');
-    final NotificationManager notificationManager = NotificationManager();
-    notificationManager.init();
+    await _model.initCurrentChair();
+    await _model.initTemperatureLimit();
+    // print(_model.currentChair.uuid);
 
     Beacons.backgroundMonitoringEvents()
         .listen((BackgroundMonitoringEvent event) {
       if (_model.currentChair == null) return;
       _model.initTargetBeacon(_model.currentChair.uuid);
       final String uuid = event.region.ids[0];
-      if (event.type == BackgroundMonitoringEventType.didDetermineState && event.state == MonitoringState.exitOrOutside) {
+      if (_model.currentChair.uuid.toUpperCase() != uuid) return;
+      if (_model.hasNotificationError) return;
+      if (event.type != BackgroundMonitoringEventType.didDetermineState) return;
+      if (event.state == MonitoringState.exitOrOutside) {
+        notificationManager.show('退出座椅范围，请检查座椅状态');
         _model.deactiveChairState();
-        checkMonitoringResult(uuid);
+      } else if (event.state == MonitoringState.enterOrInside) {
+        notificationManager.show('进入座椅范围，打开APP检查座椅状态');
       }
     });
 
     if (_model.currentChair == null) return;
     _model.initTargetBeacon(_model.currentChair.uuid);
     await _model.startMonitoring();
-
-    _model.targetBeacon.monitoringSubscription.onData((MonitoringResult result) {
-      final String uuid = result.region.ids[0];
-      if (result.event == MonitoringState.exitOrOutside) {
-        _model.deactiveChairState();
-        checkMonitoringResult(uuid);
-      }
-    });
+    return;
   }
 
   @override
@@ -107,5 +110,18 @@ class _StateBoxState extends State<StateBox> {
         ],
       ),
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    print(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        initNotificationManager();
+        startMonitor();
+        break;
+      default:
+    }
+    super.didChangeAppLifecycleState(state);
   }
 }

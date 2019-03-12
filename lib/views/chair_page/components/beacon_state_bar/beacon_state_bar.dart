@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './components/ble_box.dart';
-import './components/baby_box.dart';
+import './components/beacon_state_box.dart';
+import './components/notification_state_box.dart';
 import './components/protect_box.dart';
 
 class BeaconStateBar extends StatelessWidget {
@@ -13,9 +13,9 @@ class BeaconStateBar extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          BleBox(),
+          BeaconStateBox(),
           ProtectBox(),
-          BabyBox(),
+          NotificationStateBox(),
         ],
       ),
     );
