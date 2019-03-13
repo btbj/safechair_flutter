@@ -67,7 +67,7 @@ class MyAppState extends State<MyApp> {
           const Locale('en'),
         ],
         localeResolutionCallback: (locale, supportedLocals) {
-          print('${locale.languageCode}, ${locale.countryCode}');
+          // print('${locale.languageCode}, ${locale.countryCode}');
           _model.initLocale(locale);
         },
       ),

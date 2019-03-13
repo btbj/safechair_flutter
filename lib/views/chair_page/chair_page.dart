@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:safe_chair/ui_elements/head_bar.dart';
 import './state_box.dart';
 
+import 'package:safe_chair/lang/custom_localization.dart';
+
 class ChairPage extends StatelessWidget {
   Widget buildListViewBox() {
     return Expanded(
@@ -20,7 +22,9 @@ class ChairPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            HeadBar(title: '我的座椅'),
+            HeadBar(
+              title: CustomLocalizations.of(context).system('chair_title'),
+            ),
             buildListViewBox(),
           ],
         ),

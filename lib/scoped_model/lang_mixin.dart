@@ -8,6 +8,11 @@ import 'package:safe_chair/store/langStore.dart';
 mixin LangMixin on Model {
   Locale _locale;
 
+  bool get isEN {
+    if (_locale == null) return false;
+    return _locale.languageCode == 'en';
+  }
+
   PublishSubject<Locale> _localeSubject = PublishSubject();
   PublishSubject<Locale> get localeSubject => this._localeSubject;
 

@@ -7,6 +7,7 @@ import 'package:safe_chair/ui_elements/toast.dart';
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/models/Chair.dart';
 import 'package:safe_chair/store/chairStore.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class ChairManagePage extends StatefulWidget {
   @override
@@ -135,7 +136,7 @@ class _ChairManagePageState extends State<ChairManagePage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          '座椅管理',
+          CustomLocalizations.of(context).system('chair_manage_title'),
           style: TextStyle(color: primaryColor),
         ),
         iconTheme: IconThemeData(color: primaryColor),

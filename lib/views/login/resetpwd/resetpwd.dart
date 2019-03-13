@@ -6,6 +6,7 @@ import 'package:safe_chair/ui_elements/code_btn.dart';
 
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/ui_elements/toast.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class ResetpwdPage extends StatefulWidget {
   @override
@@ -31,7 +32,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
     return InputBox(
       controller: usernameCtr,
       icon: Icons.email,
-      hintText: '请输入邮箱',
+      hintText: CustomLocalizations.of(context).message('email_hint'),
       onChanged: (value) {
         setState(() {
           usernameForCode = value;
@@ -44,20 +45,24 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
     return InputBox(
       controller: codeCtr,
       icon: Icons.more_horiz,
-      hintText: '请输入验证码',
+      hintText: CustomLocalizations.of(context).message('code_hint'),
       suffix: _buildGetCodeBtn(),
     );
   }
 
   Widget _buildGetCodeBtn() {
-    return CodeBtn(username: usernameForCode);
+    return CodeBtn(
+      username: usernameForCode,
+      getCodeText: CustomLocalizations.of(context).system('code_btn_get_code'),
+      waitText: CustomLocalizations.of(context).system('code_btn_seconds'),
+    );
   }
 
   Widget _buildPasswordTextField() {
     return InputBox(
       controller: passwordCtr,
       icon: Icons.lock_open,
-      hintText: '请输入密码',
+      hintText: CustomLocalizations.of(context).message('password_hint'),
       obscureText: true,
     );
   }
@@ -83,7 +88,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
 
   Widget _buildResetBtn() {
     return BasicBtn(
-      label: '完成',
+      label: CustomLocalizations.of(context).system('resetpwd_btn'),
       onTap: () async {
         print('username: ${usernameCtr.text}');
         print('code: ${codeCtr.text}');
@@ -117,7 +122,7 @@ class _ResetpwdPageState extends State<ResetpwdPage> {
   @override
   Widget build(BuildContext context) {
     return BasicPlate(
-      title: '重设密码',
+      title: CustomLocalizations.of(context).system('resetpwd_title'),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,

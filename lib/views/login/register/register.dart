@@ -55,7 +55,11 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _buildGetCodeBtn() {
-    return CodeBtn(username: usernameForCode);
+    return CodeBtn(
+      username: usernameForCode,
+      getCodeText: CustomLocalizations.of(context).system('code_btn_get_code'),
+      waitText: CustomLocalizations.of(context).system('code_btn_seconds'),
+    );
   }
 
   Widget _buildPasswordTextField() {

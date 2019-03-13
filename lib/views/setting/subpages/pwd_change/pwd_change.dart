@@ -6,6 +6,7 @@ import 'package:safe_chair/scoped_model/main.dart';
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/ui_elements/toast.dart';
 import 'package:safe_chair/models/User.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class PwdChangePage extends StatefulWidget {
   @override
@@ -65,7 +66,7 @@ class _PwdChangePageState extends State<PwdChangePage> {
       };
     }
     return BasicBtn(
-      label: '修改',
+      label: CustomLocalizations.of(context).system('reset_password_btn_text'),
       onTap: onTap,
     );
   }
@@ -77,7 +78,9 @@ class _PwdChangePageState extends State<PwdChangePage> {
         children: <Widget>[
           Container(
             width: 120,
-            child: Text('登录账户', style: textStyle),
+            child: Text(
+                CustomLocalizations.of(context).system('password_login_count'),
+                style: textStyle),
           ),
           Expanded(
             child: Text(usernameString, style: textStyle),
@@ -132,9 +135,19 @@ class _PwdChangePageState extends State<PwdChangePage> {
         children: <Widget>[
           _buildUsernameLine(),
           _buildDivider(),
-          _buildPasswordLine(label: '新密码', hintText: '请输入密码', ctrl: pwdCtr),
+          _buildPasswordLine(
+            label:
+                CustomLocalizations.of(context).system('password_new_password'),
+            hintText: CustomLocalizations.of(context).message('password_hint'),
+            ctrl: pwdCtr,
+          ),
           _buildDivider(),
-          _buildPasswordLine(label: '确认密码', hintText: '请再次输入密码', ctrl: pwd2Ctr),
+          _buildPasswordLine(
+            label: CustomLocalizations.of(context)
+                .system('password_confirm_password'),
+            hintText: CustomLocalizations.of(context).message('password_confirm_hint'),
+            ctrl: pwd2Ctr,
+          ),
           _buildDivider(),
         ],
       ),
@@ -144,7 +157,7 @@ class _PwdChangePageState extends State<PwdChangePage> {
   @override
   Widget build(BuildContext context) {
     return BasicPlate(
-      title: '密码设置',
+      title: CustomLocalizations.of(context).system('password_setting_title'),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

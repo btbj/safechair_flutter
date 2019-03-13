@@ -6,6 +6,7 @@ import 'package:safe_chair/scoped_model/main.dart';
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/ui_elements/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class ChairIntroPage extends StatefulWidget {
   @override
@@ -106,7 +107,7 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
   @override
   Widget build(BuildContext context) {
     return BasicPlate(
-      title: '座椅说明',
+      title: CustomLocalizations.of(context).system('chair_intro_title'),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
