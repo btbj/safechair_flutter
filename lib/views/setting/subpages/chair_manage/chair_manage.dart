@@ -30,7 +30,13 @@ class _ChairManagePageState extends State<ChairManagePage> {
     chairList.clear();
     for (var item in chairMap.values) {
       chairList.add(
-        Chair(uuid: item['uuid'], name: item['name'], model: item['model']),
+        Chair(
+          uuid: item['uuid'],
+          name: item['name'],
+          model: item['model'],
+          enName: item['enName'],
+          enModel: item['enModel'],
+        ),
       );
     }
     setState(() {});
@@ -69,8 +75,8 @@ class _ChairManagePageState extends State<ChairManagePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(chair.model, style: TextStyle(color: primaryColor)),
-            Text(chair.name, style: TextStyle(color: primaryColor)),
+            Text(_model.isEN ? chair.enModel : chair.model, style: TextStyle(color: primaryColor)),
+            Text(_model.isEN ? chair.enName : chair.name, style: TextStyle(color: primaryColor)),
           ],
         ),
         trailing: deleteIcon,
@@ -124,6 +130,8 @@ class _ChairManagePageState extends State<ChairManagePage> {
         uuid: uuid,
         name: response['data']['product']['name'],
         model: response['data']['product']['model'],
+        enName: response['data']['product']['en_name'],
+        enModel: response['data']['product']['en_model'],
       );
       await ChairStore.saveChair(chair);
       initChairData();

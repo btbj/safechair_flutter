@@ -44,6 +44,14 @@ const Map<String, Map<String, String>> resource = {
     'chair_install_label': 'Install Method',
     'install_video_btn_text': 'Install video',
     'add_chair_btn_text': 'Add Chair',
+    // 座椅控制页面
+    'battery_level': 'Chair battery level ',
+    'current_temperature': 'Current Temperature',
+    'beacon_set_text': 'Chair Set',
+    'beacon_notset_text': 'No Chair',
+    'beacon_protecting_text': 'Protecting',
+    'location_state_text': 'Location',
+    'notification_state_text': 'Notification',
   },
   'message': {
     'email_hint': 'enter email',
@@ -54,5 +62,17 @@ const Map<String, Map<String, String>> resource = {
     'login_to_agree': 'Login for read and agree ',
     'url_invalid': 'url is invalid',
     'no_product': 'no product found',
+    // 座椅页面顶部提示
+    'error_none': 'no error',
+    'error_no_signal': 'no chair signal',
+    'error_low_battery': 'low battery level',
+    'error_high_temp': 'temperature too high',
+    'error_low_temp': 'temperature too low',
+    'error_buckle': 'buckle error',
+    'error_lfix': 'left IsoFix error',
+    'error_rfix': 'right IsoFix error',
+    'error_routation': 'routation error',
+    'error_pad': 'pad error',
+    'error_leg': 'support leg error',
   }
 };

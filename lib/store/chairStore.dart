@@ -22,6 +22,8 @@ class ChairStore {
       'uuid': chair.uuid,
       'name': chair.name,
       'model': chair.model,
+      'enName': chair.enName,
+      'enModel': chair.enModel,
     };
 
     final prefs = await SharedPreferences.getInstance();
@@ -54,9 +56,12 @@ class ChairStore {
 
     final Map<String, dynamic> chairMap = jsonDecode(chairString);
     return Chair(
-        uuid: chairMap['uuid'],
-        model: chairMap['model'],
-        name: chairMap['name']);
+      uuid: chairMap['uuid'],
+      model: chairMap['model'],
+      name: chairMap['name'],
+      enName: chairMap['enName'],
+      enModel: chairMap['enModel'],
+    );
   }
 
   static Future<Chair> setCurrentChair(Chair chair) async {
@@ -75,6 +80,8 @@ class ChairStore {
         'uuid': chair.uuid,
         'name': chair.name,
         'model': chair.model,
+        'enName': chair.enName,
+        'enModel': chair.enModel,
       };
       final String chairString = jsonEncode(chairMap);
 

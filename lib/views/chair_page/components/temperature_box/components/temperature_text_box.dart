@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class TemperatureTextBox extends StatelessWidget {
   final int temperature;
@@ -38,19 +39,23 @@ class TemperatureTextBox extends StatelessWidget {
             Baseline(
               baseline: 25,
               baselineType: TextBaseline.alphabetic,
-              child: Text(!isF ? '℃' : '℉',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: temperature == null ? Colors.grey : Colors.white,
-                      textBaseline: TextBaseline.alphabetic)),
+              child: Text(
+                !isF ? '℃' : '℉',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: temperature == null ? Colors.grey : Colors.white,
+                  textBaseline: TextBaseline.alphabetic,
+                ),
+              ),
             ),
           ],
         ),
         Text(
-          '当前车内温度',
+          CustomLocalizations.of(context).system('current_temperature'),
           style: TextStyle(
-              fontSize: 13,
-              color: temperature == null ? Colors.grey : Colors.white),
+            fontSize: 13,
+            color: temperature == null ? Colors.grey : Colors.white,
+          ),
         ),
       ],
     );

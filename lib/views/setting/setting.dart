@@ -29,13 +29,16 @@ class SettingPageState extends State<SettingPage> {
     super.initState();
   }
 
-
   Widget _buildChairManageBtn() {
     // final String label = '座椅管理';
     return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
+      String endLabel = '';
+      if (model.currentChair != null) {
+        endLabel = model.isEN? model.currentChair.enName : model.currentChair.name;
+      }
       return MenuNav(
         label: CustomLocalizations.of(context).system('chair_manage_title'),
-        endLabel: model.currentChair == null ? '' : model.currentChair.name,
+        endLabel: endLabel,
         onTap: () {
           print('nav to chair manage');
           NavManager.push(context, ChairManagePage()).then((_) {
@@ -49,9 +52,13 @@ class SettingPageState extends State<SettingPage> {
   Widget _buildChairIntroBtn() {
     // final String label = '座椅说明';
     return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
+      String endLabel = '';
+      if (model.currentChair != null) {
+        endLabel = model.isEN? model.currentChair.enName : model.currentChair.name;
+      }
       return MenuNav(
         label: CustomLocalizations.of(context).system('chair_intro_title'),
-        endLabel: model.currentChair == null ? '' : model.currentChair.name,
+        endLabel: endLabel,
         onTap: () {
           print('nav to chair intro');
           NavManager.push(context, ChairIntroPage());
@@ -63,7 +70,8 @@ class SettingPageState extends State<SettingPage> {
   Widget _buildTempBtn() {
     // final String label = '温度设置';
     return MenuNav(
-      label: CustomLocalizations.of(context).system('temperature_setting_title'),
+      label:
+          CustomLocalizations.of(context).system('temperature_setting_title'),
       onTap: () {
         print('nav to temp control');
         NavManager.push(context, TempSettingPage());
@@ -104,13 +112,21 @@ class SettingPageState extends State<SettingPage> {
   Widget _buildInfoMessage() {
     final TextStyle style = TextStyle(color: Colors.grey[700], fontSize: 12);
     return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
-      final String username = model.authUser != null ? model.authUser.username : 'unknow';
+      final String username =
+          model.authUser != null ? model.authUser.username : 'unknow';
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(CustomLocalizations.of(context).system('account_prefix') + username, style: style),
-          Text(CustomLocalizations.of(context).system('version_prefix') + versionCode, style: style),
-          Text(CustomLocalizations.of(context).system('privacy_policy'), style: style),
+          Text(
+              CustomLocalizations.of(context).system('account_prefix') +
+                  username,
+              style: style),
+          Text(
+              CustomLocalizations.of(context).system('version_prefix') +
+                  versionCode,
+              style: style),
+          Text(CustomLocalizations.of(context).system('privacy_policy'),
+              style: style),
         ],
       );
     });

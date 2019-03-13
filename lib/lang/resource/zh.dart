@@ -44,6 +44,14 @@ const Map<String, Map<String, String>> resource = {
     'chair_install_label': '安装方式：',
     'install_video_btn_text': '安装视频',
     'add_chair_btn_text': '添加座椅',
+    // 座椅控制页面
+    'battery_level': '座椅电量',
+    'current_temperature': '当前车内温度',
+    'beacon_set_text': '已设置',
+    'beacon_notset_text': '未设置',
+    'beacon_protecting_text': '保护中',
+    'location_state_text': '位置状态',
+    'notification_state_text': '推送通知',
   },
   'message': {
     'email_hint': '请输入邮箱',
@@ -54,5 +62,17 @@ const Map<String, Map<String, String>> resource = {
     'login_to_agree': '登录即代表阅读并同意',
     'url_invalid': '无效的网址',
     'no_product': '未找到产品',
+    // 座椅页面顶部提示
+    'error_none': '无异常',
+    'error_no_signal': '无座椅信号',
+    'error_low_battery': '座椅电量过低',
+    'error_high_temp': '座椅温度过高',
+    'error_low_temp': '座椅温度过低',
+    'error_buckle': '五点式卡扣异常',
+    'error_lfix': '左ISOFIX接口异常',
+    'error_rfix': '右ISOFIX接口异常',
+    'error_routation': '旋转卡扣异常',
+    'error_pad': '座椅坐垫异常',
+    'error_leg': '支撑腿异常',
   }
 };
