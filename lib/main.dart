@@ -24,7 +24,7 @@ class MyAppState extends State<MyApp> {
   void initState() {
     _model = MainModel();
     print('init model');
-    _locale = Locale('zh');
+    // _locale = Locale('zh');
     _model.localeSubject.listen((newLocale) {
       setState(() {
         _locale = newLocale;
@@ -67,6 +67,10 @@ class MyAppState extends State<MyApp> {
           const Locale('zh'),
           const Locale('en'),
         ],
+        localeResolutionCallback: (locale, supportedLocals) {
+          print('${locale.languageCode}, ${locale.countryCode}');
+          _model.initLocale(locale);
+        },
       ),
     );
   }

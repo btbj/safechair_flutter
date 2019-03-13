@@ -5,7 +5,7 @@ import 'package:rxdart/subjects.dart';
 // import 'package:safe_chair/lang/custom_localization.dart';
 
 mixin LangMixin on Model {
-  Locale _locale = Locale('zh');
+  Locale _locale;
   Locale get locale => _locale;
 
   PublishSubject<Locale> _localeSubject = PublishSubject();
@@ -14,8 +14,9 @@ mixin LangMixin on Model {
   bool _isEN = false;
   bool get isEN => _isEN;
 
-  void initLocale(BuildContext context) {
-    Localizations.of<MaterialLocalizations>(context, MaterialLocalizations);
+  void initLocale(Locale locale) {
+    if (_locale != null) return;
+    _locale = locale;
   }
 
   void toggleEnglish() {
