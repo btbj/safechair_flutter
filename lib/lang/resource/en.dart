@@ -52,6 +52,9 @@ const Map<String, Map<String, String>> resource = {
     'beacon_protecting_text': 'Protecting',
     'location_state_text': 'Location',
     'notification_state_text': 'Notification',
+    // 警报弹层
+    'alert_title': 'Alert',
+    'alert_confirm_btn_text': 'Confirm',
   },
   'message': {
     'email_hint': 'enter email',
@@ -74,5 +77,11 @@ const Map<String, Map<String, String>> resource = {
     'error_routation': 'routation error',
     'error_pad': 'pad error',
     'error_leg': 'support leg error',
+    // 警报信息
+    'alert_baby_in_car': 'You have left while baby is still in car, please check if baby has left!',
+    'alert_install_err': 'Chair instalation not correct, pleaze check!',
+    'alert_low_battery': 'Chair battery level critical, pleaze change battery!',
+    'alert_high_temp': 'Chair temperature too high, pleaze check environment in car!',
+    'alert_low_temp': 'Chair temperature too low, pleaze check environment in car!',
   }
 };

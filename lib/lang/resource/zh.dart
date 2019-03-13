@@ -52,6 +52,9 @@ const Map<String, Map<String, String>> resource = {
     'beacon_protecting_text': '保护中',
     'location_state_text': '位置状态',
     'notification_state_text': '推送通知',
+    // 警报弹层
+    'alert_title': '警报',
+    'alert_confirm_btn_text': '确定',
   },
   'message': {
     'email_hint': '请输入邮箱',
@@ -74,5 +77,11 @@ const Map<String, Map<String, String>> resource = {
     'error_routation': '旋转卡扣异常',
     'error_pad': '座椅坐垫异常',
     'error_leg': '支撑腿异常',
+    // 警报信息
+    'alert_baby_in_car': '您已经离开安全座椅，宝宝还在座位上， 请确认儿童是否离座！',
+    'alert_install_err': '座椅安装不到位，请检查所有安装项！',
+    'alert_low_battery': '座椅电量过低，请更换座椅电池！',
+    'alert_high_temp': '座椅温度过高，请确认车内环境！',
+    'alert_low_temp': '座椅温度过低，请确认车内环境！',
   }
 };

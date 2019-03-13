@@ -35,8 +35,8 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
         _model.stopMonitoring();
       }
     });
-    _model.alertSubject.listen((String alertMsg) {
-      showOverlay(alertMsg);
+    _model.alertSubject.listen((AlertType type) {
+      showOverlay(type);
     });
     pageInitialization();
   }
@@ -47,8 +47,8 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  Future showOverlay(String msg) async {
-    alertView.show(context, msg);
+  Future showOverlay(AlertType type) async {
+    alertView.show(context, type);
     return;
   }
 
