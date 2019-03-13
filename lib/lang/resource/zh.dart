@@ -31,6 +31,19 @@ const Map<String, Map<String, String>> resource = {
     'password_new_password': '新密码',
     'password_confirm_password': '确认密码',
     'reset_password_btn_text': '修改',
+    'high_temperature_alert_label': '高温报警',
+    'low_temperature_alert_label': '低温报警',
+    'temperature_unit_label': '温度单位',
+    'high_temperature_setting_dialog_title': '高温警报温度设置',
+    'low_temperature_setting_dialog_title': '低温警报温度设置',
+    'current_temp_prefix': '当前：',
+    'confirm_btn_text': '确定',
+    'chair_name_label': '座椅名称：',
+    'chair_model_label': '座椅型号：',
+    'chair_range_label': '适用范围：',
+    'chair_install_label': '安装方式：',
+    'install_video_btn_text': '安装视频',
+    'add_chair_btn_text': '添加座椅',
   },
   'message': {
     'email_hint': '请输入邮箱',
@@ -39,5 +52,7 @@ const Map<String, Map<String, String>> resource = {
     'code_hint': '请输入验证码',
     'register_to_agree': '注册即代表阅读并同意',
     'login_to_agree': '登录即代表阅读并同意',
+    'url_invalid': '无效的网址',
+    'no_product': '未找到产品',
   }
 };

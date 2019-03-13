@@ -31,6 +31,19 @@ const Map<String, Map<String, String>> resource = {
     'password_new_password': 'New Pass',
     'password_confirm_password': 'Confirm',
     'reset_password_btn_text': 'Modify',
+    'high_temperature_alert_label': 'High Temperature Alert',
+    'low_temperature_alert_label': 'Low Temperature Alert',
+    'temperature_unit_label': 'Temperature Unit',
+    'high_temperature_setting_dialog_title': 'High Temperature Alert Setting',
+    'low_temperature_setting_dialog_title': 'Low Temperature Alert Setting',
+    'current_temp_prefix': 'current: ',
+    'confirm_btn_text': 'Confirm',
+    'chair_name_label': 'Chair Name: ',
+    'chair_model_label': 'Chair Model: ',
+    'chair_range_label': 'Range: ',
+    'chair_install_label': 'Install Method',
+    'install_video_btn_text': 'Install video',
+    'add_chair_btn_text': 'Add Chair',
   },
   'message': {
     'email_hint': 'enter email',
@@ -39,5 +52,7 @@ const Map<String, Map<String, String>> resource = {
     'code_hint': 'enter code',
     'register_to_agree': 'Register for read and agree ',
     'login_to_agree': 'Login for read and agree ',
+    'url_invalid': 'url is invalid',
+    'no_product': 'no product found',
   }
 };
