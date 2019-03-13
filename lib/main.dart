@@ -24,7 +24,6 @@ class MyAppState extends State<MyApp> {
   void initState() {
     _model = MainModel();
     print('init model');
-    // _locale = Locale('zh');
     _model.localeSubject.listen((newLocale) {
       setState(() {
         _locale = newLocale;
