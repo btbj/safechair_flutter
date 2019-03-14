@@ -7,7 +7,15 @@ import 'package:flutter/services.dart';
 import './scoped_model/main.dart';
 import './views/root/root.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  // 设置不能横屏
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
