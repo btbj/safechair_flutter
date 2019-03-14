@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:safe_chair/lang/custom_localization.dart';
+
 class WelldonTabBar extends StatelessWidget {
   final Function onTap;
   WelldonTabBar({this.onTap});
@@ -44,22 +46,22 @@ class WelldonTabBar extends StatelessWidget {
           _buildBtn(
             index: 0,
             image: AssetImage('assets/img/tab_bar/baby_care.png'),
-            label: Text('座椅控制', style: textStyle),
+            label: Text(CustomLocalizations.of(context).system('tab_bar_chair'), style: textStyle),
           ),
           _buildBtn(
             index: 1,
             image: AssetImage('assets/img/tab_bar/welldon.png'),
-            label: Text('官网', style: textStyle),
+            label: Text(CustomLocalizations.of(context).system('tab_bar_website'), style: textStyle),
           ),
           _buildBtn(
             index: 2,
             image: AssetImage('assets/img/tab_bar/tmall.png'),
-            label: Text('天猫', style: textStyle),
+            label: Text(CustomLocalizations.of(context).system('tab_bar_tmall'), style: textStyle),
           ),
           _buildBtn(
             index: 3,
             image: AssetImage('assets/img/tab_bar/help.png'),
-            label: Text('帮助', style: textStyle),
+            label: Text(CustomLocalizations.of(context).system('tab_bar_help'), style: textStyle),
           ),
         ],
       ),

@@ -23,7 +23,7 @@ class _TabPageState extends State<TabPage> {
   @override
   void initState() {
     _model = ScopedModel.of(context);
-    _model.alertSubject.listen((String msg) {
+    _model.alertSubject.listen((_) {
       setState(() {
         _tabIndex = 0;
       });

@@ -30,7 +30,17 @@ class _RootPageState extends State<RootPage> {
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: isSignin ? TabPage() : LoginPage(),
+      child: Scaffold(
+        body: isSignin ? TabPage() : LoginPage(),
+        // floatingActionButton: IconButton(
+        //   color: Colors.blue,
+        //   icon: Icon(Icons.language),
+        //   onPressed: () {
+        //     print('change');
+        //     _model.toggleEnglish();
+        //   },
+        // ),
+      ),
     );
   }
 }

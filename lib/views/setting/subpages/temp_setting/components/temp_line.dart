@@ -4,6 +4,7 @@ import 'package:safe_chair/scoped_model/main.dart';
 import 'package:safe_chair/store/temperatureLimitStore.dart';
 import './slider_dialog.dart';
 import './temperature_switch.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class TemperatureLine extends StatelessWidget {
   final bool isHigh;
@@ -32,12 +33,21 @@ class TemperatureLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
       final Color primaryColor = Theme.of(context).primaryColor;
+      String listTitle = isHigh
+          ? CustomLocalizations.of(context)
+              .system('high_temperature_alert_label')
+          : CustomLocalizations.of(context)
+              .system('low_temperature_alert_label');
 
       return ListTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('低温报警', style: TextStyle(color: primaryColor)),
+            Container(
+              width: 150,
+              child: Text(listTitle,
+                  style: TextStyle(color: primaryColor), softWrap: true),
+            ),
             FlatButton(
               child: Text(_generateTempString(model.temperatureLimit),
                   style: TextStyle(color: primaryColor)),

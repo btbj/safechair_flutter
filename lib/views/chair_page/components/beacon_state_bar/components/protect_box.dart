@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/scoped_model/main.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class ProtectBox extends StatelessWidget {
   @override
@@ -8,9 +9,14 @@ class ProtectBox extends StatelessWidget {
     return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
       final bool haveChair = model.currentChair != null;
 
-      final Color displayColor = model.chairState.active ? Colors.blue : Colors.grey;
-      String displayText = haveChair ? '已设置' : '未设置';
-      if (model.chairState.active) displayText = '保护中';
+      final Color displayColor =
+          model.chairState.active ? Colors.blue : Colors.grey;
+      String displayText = haveChair
+          ? CustomLocalizations.of(context).system('beacon_set_text')
+          : CustomLocalizations.of(context).system('beacon_notset_text');
+      if (model.chairState.active)
+        displayText =
+            CustomLocalizations.of(context).system('beacon_protecting_text');
 
       return Container(
         height: 60,
@@ -38,7 +44,7 @@ class ProtectBox extends StatelessWidget {
             ),
             child: Text(
               displayText,
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: model.isEN ? 9 : 12),
             ),
           ),
         ),

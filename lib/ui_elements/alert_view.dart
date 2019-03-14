@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:safe_chair/lang/custom_localization.dart';
+
+enum AlertType {
+  babyInCarWhenLeaving,
+  installErr,
+  lowBattery,
+  highTemp,
+  lowTemp,
+}
 
 class AlertView {
   String msg;
 
-  Future show(BuildContext context, String msg) {
+  Future show(BuildContext context, AlertType type) {
     Navigator.popUntil(
         context, ModalRoute.withName(Navigator.defaultRouteName));
 
-    this.msg = msg;
+    this.msg = type.toString();
+    switch (type) {
+      case AlertType.babyInCarWhenLeaving:
+        this.msg = CustomLocalizations.of(context).message('alert_baby_in_car');
+        break;
+      case AlertType.installErr:
+        this.msg = CustomLocalizations.of(context).message('alert_install_err');
+        break;
+      case AlertType.lowBattery:
+        this.msg = CustomLocalizations.of(context).message('alert_low_battery');
+        break;
+      case AlertType.highTemp:
+        this.msg = CustomLocalizations.of(context).message('alert_high_temp');
+        break;
+      case AlertType.lowTemp:
+        this.msg = CustomLocalizations.of(context).message('alert_low_temp');
+        break;
+      default:
+        this.msg = '';
+    }
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -56,7 +84,9 @@ class AlertDialogBox extends StatelessWidget {
                   width: MediaQuery.of(context).size.width - 20,
                   child: SimpleDialog(
                     contentPadding: EdgeInsets.symmetric(horizontal: 25),
-                    title: Text('警告'),
+                    title: Text(
+                      CustomLocalizations.of(context).system('alert_title'),
+                    ),
                     children: <Widget>[
                       Container(
                         width: 250,
@@ -64,7 +94,10 @@ class AlertDialogBox extends StatelessWidget {
                         child: Text(msg, softWrap: true),
                       ),
                       RaisedButton(
-                        child: Text('确定'),
+                        child: Text(
+                          CustomLocalizations.of(context)
+                              .system('alert_confirm_btn_text'),
+                        ),
                         onPressed: () {
                           print('alert close');
                           Navigator.of(context).pop();

@@ -6,7 +6,9 @@ import 'package:safe_chair/ui_elements/toast.dart';
 class CodeBtn extends StatefulWidget {
   final String username;
   final int countSeconds;
-  CodeBtn({this.username, this.countSeconds = 120});
+  final String getCodeText;
+  final String waitText;
+  CodeBtn({this.username, this.countSeconds = 120, this.getCodeText, this.waitText});
 
   @override
   _CodeBtnState createState() => _CodeBtnState();
@@ -16,18 +18,24 @@ class _CodeBtnState extends State<CodeBtn> {
   Timer _timer;
   int _seconds = 0;
   bool _isCounting = false;
-  String _btnText = '获取验证码';
+  String _btnText;
+
+  @override
+  void initState() {
+    _btnText = widget.getCodeText;
+    super.initState();
+  }
 
   void startTimer() {
     // 初始化
     _isCounting = true;
     _seconds = widget.countSeconds;
-    _btnText = _seconds.toString() + 's后获取';
+    _btnText = _seconds.toString() + widget.waitText;
     setState(() {});
     // 定时操作
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _seconds--;
-      _btnText = _seconds.toString() + 's后获取';
+      _btnText = _seconds.toString() + widget.waitText;
       setState(() {});
       if (_seconds == 0) {
         _cancelTimer();
@@ -38,7 +46,7 @@ class _CodeBtnState extends State<CodeBtn> {
 
   void _cancelTimer() {
     _seconds = 0;
-    _btnText = '获取验证码';
+    _btnText = widget.getCodeText;
     _isCounting = false;
     _timer?.cancel();
   }
@@ -84,7 +92,7 @@ class _CodeBtnState extends State<CodeBtn> {
       onPressed: onPressed,
       color: primaryColor,
       disabledColor: Colors.grey,
-      padding: EdgeInsets.symmetric(vertical: 15),
+      padding: EdgeInsets.symmetric(vertical: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.only(
           topEnd: Radius.circular(12.0),

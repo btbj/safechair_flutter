@@ -9,6 +9,8 @@ import 'package:safe_chair/views/policy/service_policy.dart';
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/ui_elements/toast.dart';
 
+import 'package:safe_chair/lang/custom_localization.dart';
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -24,7 +26,8 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildTitle() {
     Color primaryColor = Theme.of(context).primaryColor;
     return Text(
-      '欢迎加入',
+      CustomLocalizations.of(context).system('register_title'),
+      // 'title',
       style: TextStyle(color: primaryColor, fontSize: 20),
     );
   }
@@ -33,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return InputBox(
       controller: usernameCtr,
       icon: Icons.email,
-      hintText: '请输入邮箱',
+      hintText: CustomLocalizations.of(context).message('email_hint'),
       onChanged: (value) {
         setState(() {
           usernameForCode = value;
@@ -46,20 +49,24 @@ class _RegisterPageState extends State<RegisterPage> {
     return InputBox(
       controller: codeCtr,
       icon: Icons.more_horiz,
-      hintText: '请输入验证码',
+      hintText: CustomLocalizations.of(context).message('code_hint'),
       suffix: _buildGetCodeBtn(),
     );
   }
 
   Widget _buildGetCodeBtn() {
-    return CodeBtn(username: usernameForCode);
+    return CodeBtn(
+      username: usernameForCode,
+      getCodeText: CustomLocalizations.of(context).system('code_btn_get_code'),
+      waitText: CustomLocalizations.of(context).system('code_btn_seconds'),
+    );
   }
 
   Widget _buildPasswordTextField() {
     return InputBox(
       controller: passwordCtr,
       icon: Icons.lock_open,
-      hintText: '请输入密码',
+      hintText: CustomLocalizations.of(context).message('password_hint'),
       obscureText: true,
     );
   }
@@ -85,7 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _buildRegisterBtn() {
     return BasicBtn(
-      label: '加入',
+      label: CustomLocalizations.of(context).system('register_btn_text'),
       onTap: () async {
         print('username: ${usernameCtr.text}');
         print('code: ${codeCtr.text}');
@@ -121,12 +128,12 @@ class _RegisterPageState extends State<RegisterPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          '注册即代表阅读并同意',
+          CustomLocalizations.of(context).message('register_to_agree'),
           style: TextStyle(color: Colors.grey[700], fontSize: 12),
         ),
         GestureDetector(
           child: Text(
-            '服务条款',
+            CustomLocalizations.of(context).system('policy_nav_text'),
             style:
                 TextStyle(color: Theme.of(context).primaryColor, fontSize: 12),
           ),

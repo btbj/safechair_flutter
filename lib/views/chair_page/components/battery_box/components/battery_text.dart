@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class BatteryText extends StatelessWidget {
   final int progress;
@@ -17,14 +18,17 @@ class BatteryText extends StatelessWidget {
         return Colors.white;
     }
 
-    TextStyle textStyle =TextStyle(fontSize: 12, color: getTextColor());
+    TextStyle textStyle = TextStyle(fontSize: 12, color: getTextColor());
 
     String progressText = active ? '$progress' : '??';
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('座椅电量', style: textStyle),
+        Text(
+          CustomLocalizations.of(context).system('battery_level'),
+          style: textStyle,
+        ),
         Text('$progressText' + '%', style: textStyle),
       ],
     );

@@ -6,6 +6,7 @@ import 'package:safe_chair/scoped_model/main.dart';
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/ui_elements/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class ChairIntroPage extends StatefulWidget {
   @override
@@ -19,7 +20,12 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
     'model': '',
     'useful_area': '',
     'setup_type': '',
-    'setup_video_url': null
+    'setup_video_url': null,
+    'en_name': '',
+    'en_model': '',
+    'en_useful_area': '',
+    'en_setup_type': '',
+    'en_setup_video_url': null
   };
 
   @override
@@ -33,14 +39,20 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
     print('get device info');
     if (_model.currentChair == null) return;
     try {
-      final Map<String, dynamic> response =
-          await api.post(context, api: '/device/get_info_by_uuid', body: {
-        'token': _model.authUser.token,
-        'uuid': _model.currentChair.uuid,
-      });
+      final Map<String, dynamic> response = await api.post(
+        context,
+        api: '/device/get_info_by_uuid',
+        body: {
+          'token': _model.authUser.token,
+          'uuid': _model.currentChair.uuid,
+        },
+      );
       print('r: $response');
       if (response['data']['product'] == null) {
-        Toast.show(context, '未找到产品');
+        Toast.show(
+          context,
+          CustomLocalizations.of(context).message('no_product'),
+        );
         return;
       }
       chairInfo['name'] = response['data']['product']['name'];
@@ -49,8 +61,15 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
       chairInfo['setup_type'] = response['data']['product']['setup_type'];
       chairInfo['setup_video_url'] =
           response['data']['product']['setup_video_url'];
+      chairInfo['en_name'] = response['data']['product']['en_name'];
+      chairInfo['en_model'] = response['data']['product']['en_model'];
+      chairInfo['en_useful_area'] =
+          response['data']['product']['en_useful_area'];
+      chairInfo['en_setup_type'] = response['data']['product']['en_setup_type'];
+      chairInfo['en_setup_video_url'] =
+          response['data']['product']['en_setup_video_url'];
       setState(() {});
-      Toast.show(context, '获取成功');
+      Toast.show(context, response['message']);
     } catch (e) {
       print(e);
       Toast.show(context, e);
@@ -59,19 +78,24 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
 
   Widget _buildVideoBtn() {
     Function onTap;
-    final String url = chairInfo['setup_video_url'];
+    final String url = _model.isEN
+        ? chairInfo['en_setup_video_url']
+        : chairInfo['setup_video_url'];
     if (url != null) {
       onTap = () async {
-        print('check video: ' + chairInfo['setup_video_url']);
+        print('check video: ' + url);
         if (await canLaunch(url)) {
           await launch(url);
         } else {
-          Toast.show(context, '不能打开网址');
+          Toast.show(
+            context,
+            CustomLocalizations.of(context).message('url_invalid'),
+          );
         }
       };
     }
     return BasicBtn(
-      label: '安装视频',
+      label: CustomLocalizations.of(context).system('install_video_btn_text'),
       onTap: onTap,
     );
   }
@@ -94,10 +118,21 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: <Widget>[
-          _buildLine('座椅名称:', chairInfo['name']),
-          _buildLine('座椅型号:', chairInfo['model']),
-          _buildLine('适用范围:', chairInfo['useful_area']),
-          _buildLine('安装方式:', chairInfo['setup_type']),
+          _buildLine(CustomLocalizations.of(context).system('chair_name_label'),
+              _model.isEN ? chairInfo['en_name'] : chairInfo['name']),
+          _buildLine(
+              CustomLocalizations.of(context).system('chair_model_label'),
+              _model.isEN ? chairInfo['en_model'] : chairInfo['model']),
+          _buildLine(
+              CustomLocalizations.of(context).system('chair_range_label'),
+              _model.isEN
+                  ? chairInfo['en_useful_area']
+                  : chairInfo['useful_area']),
+          _buildLine(
+              CustomLocalizations.of(context).system('chair_install_label'),
+              _model.isEN
+                  ? chairInfo['en_setup_type']
+                  : chairInfo['setup_type']),
         ],
       ),
     );
@@ -106,7 +141,7 @@ class _ChairIntroPageState extends State<ChairIntroPage> {
   @override
   Widget build(BuildContext context) {
     return BasicPlate(
-      title: '座椅说明',
+      title: CustomLocalizations.of(context).system('chair_intro_title'),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

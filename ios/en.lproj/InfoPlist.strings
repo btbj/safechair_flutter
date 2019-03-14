@@ -1,0 +1,11 @@
+/* 
+  Localization.strings
+  Runner
+
+  Created by gooduo on 2019/3/14.
+  Copyright © 2019 The Chromium Authors. All rights reserved.
+*/
+
+{
+    CFBundleDisplayName = "Welldon";
+}

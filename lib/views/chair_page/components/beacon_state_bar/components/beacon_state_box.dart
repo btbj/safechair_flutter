@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/scoped_model/main.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class BeaconStateBox extends StatelessWidget {
   @override
@@ -15,7 +16,10 @@ class BeaconStateBox extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Icon(Icons.near_me, color: Colors.white, size: 14),
-            Text('位置状态', style: TextStyle(color: Colors.white)),
+            Text(
+              CustomLocalizations.of(context).system('location_state_text'),
+              style: TextStyle(color: Colors.white, fontSize: model.isEN ? 10 : 14),
+            ),
             SizedBox(width: 5),
             Container(
               height: 10,

@@ -4,6 +4,7 @@ import 'package:safe_chair/models/ChairState.dart';
 import 'package:beacons/beacons.dart';
 import 'package:safe_chair/utils/TargetBeacon.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:safe_chair/ui_elements/alert_view.dart';
 
 import 'package:safe_chair/store/temperatureLimitStore.dart';
 import 'package:safe_chair/utils/NotificationManager.dart';
@@ -15,8 +16,11 @@ mixin ChairStateMixin on Model {
   TargetBeacon _targetBeacon;
   TargetBeacon get targetBeacon => _targetBeacon;
 
-  PublishSubject<String> _alertSubject = PublishSubject();
-  PublishSubject<String> get alertSubject => this._alertSubject;
+  PublishSubject<AlertType> _alertSubject = PublishSubject();
+  PublishSubject<AlertType> get alertSubject => this._alertSubject;
+
+  PublishSubject<NotificationType> _notificationSubject = PublishSubject();
+  PublishSubject<NotificationType> get notificationSubject => this._notificationSubject;
 
   TemperatureLimit _temperatureLimit;
   TemperatureLimit get temperatureLimit => this._temperatureLimit;
@@ -62,9 +66,8 @@ mixin ChairStateMixin on Model {
       // }
       // this.pushNotification(msg);
       if (result.event ==MonitoringState.exitOrOutside && this._chairState.pad) {
-        String msg = '您已经离开安全座椅，宝宝还在座位上， 请确认儿童是否离座！';
-        this.pushNotification(msg);
-        this.showAlert(msg);
+        this.pushNotification(NotificationType.babyInCarWhenLeaving);
+        this.showAlert(AlertType.babyInCarWhenLeaving);
       }
 
       if (result.event ==MonitoringState.exitOrOutside) {
@@ -106,8 +109,8 @@ mixin ChairStateMixin on Model {
     return;
   }
 
-  void showAlert(String alertmsg) {
-    _alertSubject.add(alertmsg);
+  void showAlert(AlertType type) {
+    _alertSubject.add(type);
   }
 
   void setNotificationError(bool value) {
@@ -135,12 +138,8 @@ mixin ChairStateMixin on Model {
     return;
   }
 
-  void pushNotification(String msg) async {
-    NotificationManager nm = NotificationManager();
-    bool noErr = await nm.init();
-    if (noErr) {
-      nm.show(msg, sound: NotificationSound.beep);
-    }
+  void pushNotification(NotificationType type) async {
+    _notificationSubject.add(type);
   }
 
   void checkChairState() {
@@ -148,9 +147,8 @@ mixin ChairStateMixin on Model {
     if (this._chairState.state != '111111' && !this._hasPushedStateError) {
       this._errorTimer = Timer(Duration(seconds: 10), () async {
         this._hasPushedStateError = true;
-        String msg = '座椅安装不到位，请检查所有安装项！';
-        this.pushNotification(msg);
-        this.showAlert(msg);
+        this.pushNotification(NotificationType.installErr);
+        this.showAlert(AlertType.installErr);
       });
     }
     if (this._chairState.state == '111111') {
@@ -159,9 +157,8 @@ mixin ChairStateMixin on Model {
 
     if (this._chairState.battery < 10 && !this._hasPushedBatteryError) {
       this._hasPushedBatteryError = true;
-      String msg = '座椅电量过低，请更换座椅电池！';
-      this.pushNotification(msg);
-      this.showAlert(msg);
+      this.pushNotification(NotificationType.lowBattery);
+      this.showAlert(AlertType.lowBattery);
     }
 
     if (this.temperatureLimit != null) {
@@ -169,18 +166,16 @@ mixin ChairStateMixin on Model {
           this.temperatureLimit.high < this._chairState.temprature &&
           !this._hasPushedTempError) {
         this._hasPushedTempError = true;
-        String msg = '座椅温度过高，请确认车内环境！';
-        this.pushNotification(msg);
-        this.showAlert(msg);
+        this.pushNotification(NotificationType.highTemp);
+        this.showAlert(AlertType.highTemp);
       } // 高温报警
 
       if (this.temperatureLimit.lowSwitch &&
           this.temperatureLimit.low > this._chairState.temprature &&
           !this._hasPushedTempError) {
         this._hasPushedTempError = true;
-        String msg = '座椅温度过低，请确认车内环境！';
-        this.pushNotification(msg);
-        this.showAlert(msg);
+        this.pushNotification(NotificationType.lowTemp);
+        this.showAlert(AlertType.lowTemp);
       } // 低温报警
 
       if (this.temperatureLimit.low < this._chairState.temprature &&

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:safe_chair/scoped_model/main.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class HeadMsg extends StatelessWidget {
-  Widget _buildIcon(String errMsg) {
-    if (errMsg == null) {
+  Widget _buildIcon(bool active, bool hasError) {
+    if (!hasError) {
       return ClipOval(
         child: Container(
           alignment: Alignment.center,
@@ -20,7 +21,7 @@ class HeadMsg extends StatelessWidget {
           alignment: Alignment.center,
           height: 15,
           width: 15,
-          color: errMsg == '无座椅信号' ? Colors.grey : Colors.red,
+          color: active ? Colors.red : Colors.grey,
           child: Text(
             '!',
             style: TextStyle(
@@ -34,45 +35,52 @@ class HeadMsg extends StatelessWidget {
     }
   }
 
-  Widget _buildText(String errMsg) {
-    if (errMsg == null) {
-      return Text('无异常', style: TextStyle(color: Colors.white));
-    } else if (errMsg == '无座椅信号') {
-      return Text(errMsg, style: TextStyle(color: Colors.grey));
-    } else {
-      return Text(errMsg, style: TextStyle(color: Colors.red));
-    }
+  Widget _buildText(String message, bool active, bool hasError) {
+    Color textColor = Colors.white;
+    if (hasError) textColor = Colors.red;
+    if (!active) textColor = Colors.grey;
+    return Text(
+      message,
+      style: TextStyle(color: textColor),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(builder: (context, child, model) {
       String errMsg;
-      if (model.chairState.battery < 10) errMsg = '座椅电量过低';
+      bool active = model.chairState.active;
+      bool hasError = true;
+
+      if (model.chairState.battery < 10) errMsg = CustomLocalizations.of(context).message('error_low_battery');
       if (model.temperatureLimit != null) {
         if (model.temperatureLimit.highSwitch &&
             model.temperatureLimit.high < model.chairState.temprature) {
-          errMsg = '座椅温度过高';
+          errMsg = CustomLocalizations.of(context).message('error_high_temp');
         }
         if (model.temperatureLimit.lowSwitch &&
             model.temperatureLimit.low > model.chairState.temprature) {
-          errMsg = '座椅温度过低';
+          errMsg = CustomLocalizations.of(context).message('error_low_temp');
         }
       }
-      if (!model.chairState.buckle) errMsg = '五点式卡扣异常';
-      if (!model.chairState.lfix) errMsg = '左ISOFIX接口异常';
-      if (!model.chairState.rfix) errMsg = '右ISOFIX接口异常';
-      if (!model.chairState.routation) errMsg = '旋转卡扣异常';
-      if (!model.chairState.pad) errMsg = '座椅坐垫异常';
-      if (!model.chairState.leg) errMsg = '支撑腿异常';
-      if (!model.chairState.active) errMsg = '无座椅信号';
+      if (!model.chairState.buckle) errMsg = CustomLocalizations.of(context).message('error_buckle');
+      if (!model.chairState.lfix) errMsg = CustomLocalizations.of(context).message('error_lfix');
+      if (!model.chairState.rfix) errMsg = CustomLocalizations.of(context).message('error_rfix');
+      if (!model.chairState.routation) errMsg = CustomLocalizations.of(context).message('error_routation');
+      if (!model.chairState.pad) errMsg = CustomLocalizations.of(context).message('error_pad');
+      if (!model.chairState.leg) errMsg = CustomLocalizations.of(context).message('error_leg');
+      if (!active) errMsg = CustomLocalizations.of(context).message('error_no_signal');
+      if (errMsg == null) {
+        hasError = false;
+        errMsg = CustomLocalizations.of(context).message('error_none');
+      }
 
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _buildIcon(errMsg),
+          _buildIcon(active, hasError),
           SizedBox(width: 5),
-          _buildText(errMsg),
+          _buildText(errMsg, active, hasError),
         ],
       );
     });

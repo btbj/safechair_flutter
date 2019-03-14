@@ -7,6 +7,7 @@ import 'package:safe_chair/ui_elements/toast.dart';
 import 'package:safe_chair/services/api.dart' as api;
 import 'package:safe_chair/models/Chair.dart';
 import 'package:safe_chair/store/chairStore.dart';
+import 'package:safe_chair/lang/custom_localization.dart';
 
 class ChairManagePage extends StatefulWidget {
   @override
@@ -29,7 +30,13 @@ class _ChairManagePageState extends State<ChairManagePage> {
     chairList.clear();
     for (var item in chairMap.values) {
       chairList.add(
-        Chair(uuid: item['uuid'], name: item['name'], model: item['model']),
+        Chair(
+          uuid: item['uuid'],
+          name: item['name'],
+          model: item['model'],
+          enName: item['enName'],
+          enModel: item['enModel'],
+        ),
       );
     }
     setState(() {});
@@ -68,8 +75,8 @@ class _ChairManagePageState extends State<ChairManagePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(chair.model, style: TextStyle(color: primaryColor)),
-            Text(chair.name, style: TextStyle(color: primaryColor)),
+            Text(_model.isEN ? chair.enModel : chair.model, style: TextStyle(color: primaryColor)),
+            Text(_model.isEN ? chair.enName : chair.name, style: TextStyle(color: primaryColor)),
           ],
         ),
         trailing: deleteIcon,
@@ -88,7 +95,7 @@ class _ChairManagePageState extends State<ChairManagePage> {
 
   Widget _buildAddBtn() {
     return BasicBtn(
-      label: '添加座椅',
+      label: CustomLocalizations.of(context).system('add_chair_btn_text'),
       onTap: () {
         print('add chair');
         ScanManager.start(context).then((uuid) {
@@ -103,24 +110,32 @@ class _ChairManagePageState extends State<ChairManagePage> {
 
   void getChairInfo(String uuid) async {
     try {
-      final Map<String, dynamic> response =
-          await api.post(context, api: '/device/get_info_by_uuid', body: {
-        'token': _model.authUser.token,
-        'uuid': uuid,
-      });
+      final Map<String, dynamic> response = await api.post(
+        context,
+        api: '/device/get_info_by_uuid',
+        body: {
+          'token': _model.authUser.token,
+          'uuid': uuid,
+        },
+      );
       print('r: $response');
       if (response['data']['product'] == null) {
-        Toast.show(context, '未找到产品');
+        Toast.show(
+          context,
+          CustomLocalizations.of(context).message('no_product'),
+        );
         return;
       }
       final Chair chair = Chair(
         uuid: uuid,
         name: response['data']['product']['name'],
         model: response['data']['product']['model'],
+        enName: response['data']['product']['en_name'],
+        enModel: response['data']['product']['en_model'],
       );
       await ChairStore.saveChair(chair);
       initChairData();
-      Toast.show(context, '添加成功');
+      Toast.show(context, response['message']);
     } catch (e) {
       print(e);
       Toast.show(context, e);
@@ -135,7 +150,7 @@ class _ChairManagePageState extends State<ChairManagePage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          '座椅管理',
+          CustomLocalizations.of(context).system('chair_manage_title'),
           style: TextStyle(color: primaryColor),
         ),
         iconTheme: IconThemeData(color: primaryColor),
