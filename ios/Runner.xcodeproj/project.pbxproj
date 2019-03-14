@@ -287,7 +287,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh",
-				"${PODS_ROOT}/../.symlinks/flutter/ios/Flutter.framework",
+				"${PODS_ROOT}/../.symlinks/flutter/ios-release/Flutter.framework",
 				"${BUILT_PRODUCTS_DIR}/beacons/beacons.framework",
 				"${BUILT_PRODUCTS_DIR}/fast_qr_reader_view/fast_qr_reader_view.framework",
 				"${BUILT_PRODUCTS_DIR}/flutter_local_notifications/flutter_local_notifications.framework",
@@ -440,7 +440,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.gooduo.safeChair;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gooduo.safechair;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -568,7 +568,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.gooduo.safeChair;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gooduo.safechair;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -592,7 +592,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.gooduo.safeChair;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gooduo.safechair;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
