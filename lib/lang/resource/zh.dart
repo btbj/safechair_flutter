@@ -83,5 +83,8 @@ const Map<String, Map<String, String>> resource = {
     'alert_low_battery': '座椅电量过低，请更换座椅电池！',
     'alert_high_temp': '座椅温度过高，请确认车内环境！',
     'alert_low_temp': '座椅温度过低，请确认车内环境！',
+    // 提示信息
+    'notify_enter': '进入座椅范围，打开APP检查座椅状态',
+    'notify_exit': '退出座椅范围，请检查座椅状态',
   }
 };

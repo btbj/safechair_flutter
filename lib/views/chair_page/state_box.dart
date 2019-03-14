@@ -38,6 +38,9 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
     _model.alertSubject.listen((AlertType type) {
       showOverlay(type);
     });
+    _model.notificationSubject.listen((NotificationType type) {
+      pushNotification(type);
+    });
     pageInitialization();
   }
 
@@ -50,6 +53,10 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
   Future showOverlay(AlertType type) async {
     alertView.show(context, type);
     return;
+  }
+
+  Future pushNotification(NotificationType type) async {
+    notificationManager.show(context, type);
   }
 
   void pageInitialization() async {
@@ -79,10 +86,12 @@ class _StateBoxState extends State<StateBox> with WidgetsBindingObserver {
       if (_model.hasNotificationError) return;
       if (event.type != BackgroundMonitoringEventType.didDetermineState) return;
       if (event.state == MonitoringState.exitOrOutside) {
-        notificationManager.show('退出座椅范围，请检查座椅状态');
+        // notificationManager.show('退出座椅范围，请检查座椅状态');
+        pushNotification(NotificationType.exitRegion);
         _model.deactiveChairState();
       } else if (event.state == MonitoringState.enterOrInside) {
-        notificationManager.show('进入座椅范围，打开APP检查座椅状态');
+        // notificationManager.show('进入座椅范围，打开APP检查座椅状态');
+        pushNotification(NotificationType.enterRegion);
       }
     });
 

@@ -79,9 +79,12 @@ const Map<String, Map<String, String>> resource = {
     'error_leg': 'support leg error',
     // 警报信息
     'alert_baby_in_car': 'You have left while baby is still in car, please check if baby has left!',
-    'alert_install_err': 'Chair instalation not correct, pleaze check!',
-    'alert_low_battery': 'Chair battery level critical, pleaze change battery!',
-    'alert_high_temp': 'Chair temperature too high, pleaze check environment in car!',
-    'alert_low_temp': 'Chair temperature too low, pleaze check environment in car!',
+    'alert_install_err': 'Chair instalation not correct, please check!',
+    'alert_low_battery': 'Chair battery level critical, please change battery!',
+    'alert_high_temp': 'Chair temperature too high, please check environment in car!',
+    'alert_low_temp': 'Chair temperature too low, please check environment in car!',
+    // 提示信息
+    'notify_enter': 'Enter chair region, please open to check chair state',
+    'notify_exit': 'Exit chair region, please check chair state',
   }
 };
