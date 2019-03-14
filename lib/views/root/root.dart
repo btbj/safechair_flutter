@@ -32,14 +32,14 @@ class _RootPageState extends State<RootPage> {
       },
       child: Scaffold(
         body: isSignin ? TabPage() : LoginPage(),
-        floatingActionButton: IconButton(
-          color: Colors.blue,
-          icon: Icon(Icons.language),
-          onPressed: () {
-            print('change');
-            _model.toggleEnglish();
-          },
-        ),
+        // floatingActionButton: IconButton(
+        //   color: Colors.blue,
+        //   icon: Icon(Icons.language),
+        //   onPressed: () {
+        //     print('change');
+        //     _model.toggleEnglish();
+        //   },
+        // ),
       ),
     );
   }

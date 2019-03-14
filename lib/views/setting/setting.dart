@@ -10,9 +10,11 @@ import './subpages/chair_manage/chair_manage.dart';
 import './subpages/chair_intro/chair_intro.dart';
 import './subpages/temp_setting/temp_setting.dart';
 import './subpages/pwd_change/pwd_change.dart';
+import './subpages/language_setting/language_setting.dart';
 
 // import 'package:safe_chair/models/Chair.dart';
 import 'package:safe_chair/lang/custom_localization.dart';
+import 'package:safe_chair/config.dart' as config;
 
 class SettingPage extends StatefulWidget {
   @override
@@ -22,8 +24,6 @@ class SettingPage extends StatefulWidget {
 }
 
 class SettingPageState extends State<SettingPage> {
-  String versionCode = '0.1.3';
-
   @override
   void initState() {
     super.initState();
@@ -90,6 +90,17 @@ class SettingPageState extends State<SettingPage> {
     );
   }
 
+  Widget _buildLanguageBtn() {
+    // final String label = '密码设置';
+    return MenuNav(
+      label: CustomLocalizations.of(context).system('language_setting_title'),
+      onTap: () {
+        print('nav to language setting');
+        NavManager.push(context, LanguageSettingPage());
+      },
+    );
+  }
+
   Widget _buildListBox() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -104,6 +115,7 @@ class SettingPageState extends State<SettingPage> {
           ),
           _buildTempBtn(),
           _buildPassBtn(),
+          _buildLanguageBtn(),
         ],
       ),
     );
@@ -123,7 +135,7 @@ class SettingPageState extends State<SettingPage> {
               style: style),
           Text(
               CustomLocalizations.of(context).system('version_prefix') +
-                  versionCode,
+                  config.versionNumber,
               style: style),
           Text(CustomLocalizations.of(context).system('privacy_policy'),
               style: style),

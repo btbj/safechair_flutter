@@ -44,6 +44,7 @@ const Map<String, Map<String, String>> resource = {
     'chair_install_label': '安装方式：',
     'install_video_btn_text': '安装视频',
     'add_chair_btn_text': '添加座椅',
+    'language_setting_title': '语言设置',
     // 座椅控制页面
     'battery_level': '座椅电量',
     'current_temperature': '当前车内温度',

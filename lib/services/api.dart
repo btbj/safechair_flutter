@@ -4,9 +4,11 @@ import 'package:safe_chair/scoped_model/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:safe_chair/config.dart' as config;
 
 // const host = 'http://192.168.0.33/2018/safe_chair/index.php';
-const host = 'http://php.gooduo.net/safe_chair/index.php/';
+// const host = 'http://php.gooduo.net/safe_chair/index.php/';
+const String host = config.api_host; 
 
 Future post(BuildContext context,
     {String api, dynamic body}) async {
