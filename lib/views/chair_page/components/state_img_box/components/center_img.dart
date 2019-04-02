@@ -24,7 +24,7 @@ class CenterImg extends StatelessWidget {
     }
 
     return Image(
-      height: 250,
+      height: 220,
       image: image,
       color: blendColor,
       colorBlendMode: BlendMode.color,

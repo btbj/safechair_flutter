@@ -47,7 +47,25 @@ class NotificationManager {
     String sound;
     switch (type) {
       case NotificationType.babyInCarWhenLeaving:
-        sound = 'beep.caf';
+        sound = 'baby_in_car_alert.caf';
+        break;
+      case NotificationType.enterRegion:
+        sound = 'enter_region.caf';
+        break;
+      case NotificationType.exitRegion:
+        sound = 'exit_region.caf';
+        break;
+      case NotificationType.installErr:
+        sound = 'install_err.caf';
+        break;
+      case NotificationType.lowBattery:
+        sound = 'low_battery.caf';
+        break;
+      case NotificationType.highTemp:
+        sound = 'temp_alert.caf';
+        break;
+      case NotificationType.lowTemp:
+        sound = 'temp_alert.caf';
         break;
       default:
     }

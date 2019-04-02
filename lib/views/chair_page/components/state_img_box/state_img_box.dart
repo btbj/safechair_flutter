@@ -10,7 +10,7 @@ import './components/leg_box.dart';
 class StateImgBox extends StatelessWidget {
   Widget _buildLeftList() {
     return Container(
-      height: 250,
+      height: 220,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -25,7 +25,7 @@ class StateImgBox extends StatelessWidget {
 
   Widget _buildRigheList() {
     return Container(
-      height: 250,
+      height: 220,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,

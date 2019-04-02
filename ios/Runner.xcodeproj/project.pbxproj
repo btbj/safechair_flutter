@@ -9,8 +9,18 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		2304BF7E2239EB0C0021B9BD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2304BF802239EB0C0021B9BD /* InfoPlist.strings */; };
-		232FA58A222E13BD00C7085E /* beep.caf in Sources */ = {isa = PBXBuildFile; fileRef = 23CDC887222E0E310026D6EE /* beep.caf */; };
-		23CDC88A222E0E310026D6EE /* beep.caf in Resources */ = {isa = PBXBuildFile; fileRef = 23CDC887222E0E310026D6EE /* beep.caf */; };
+		23F460462252F0B600F5415F /* install_err.caf in Resources */ = {isa = PBXBuildFile; fileRef = 23F460402252F0B600F5415F /* install_err.caf */; };
+		23F460472252F0B600F5415F /* low_battery.caf in Resources */ = {isa = PBXBuildFile; fileRef = 23F460412252F0B600F5415F /* low_battery.caf */; };
+		23F460482252F0B600F5415F /* enter_region.caf in Resources */ = {isa = PBXBuildFile; fileRef = 23F460422252F0B600F5415F /* enter_region.caf */; };
+		23F460492252F0B600F5415F /* baby_in_car_alert.caf in Resources */ = {isa = PBXBuildFile; fileRef = 23F460432252F0B600F5415F /* baby_in_car_alert.caf */; };
+		23F4604A2252F0B600F5415F /* temp_alert.caf in Resources */ = {isa = PBXBuildFile; fileRef = 23F460442252F0B600F5415F /* temp_alert.caf */; };
+		23F4604B2252F0B600F5415F /* exit_region.caf in Resources */ = {isa = PBXBuildFile; fileRef = 23F460452252F0B600F5415F /* exit_region.caf */; };
+		23F4604C2252F0C100F5415F /* baby_in_car_alert.caf in Sources */ = {isa = PBXBuildFile; fileRef = 23F460432252F0B600F5415F /* baby_in_car_alert.caf */; };
+		23F4604D2252F0C400F5415F /* enter_region.caf in Sources */ = {isa = PBXBuildFile; fileRef = 23F460422252F0B600F5415F /* enter_region.caf */; };
+		23F4604E2252F0C800F5415F /* exit_region.caf in Sources */ = {isa = PBXBuildFile; fileRef = 23F460452252F0B600F5415F /* exit_region.caf */; };
+		23F4604F2252F0CF00F5415F /* install_err.caf in Sources */ = {isa = PBXBuildFile; fileRef = 23F460402252F0B600F5415F /* install_err.caf */; };
+		23F460502252F0D000F5415F /* low_battery.caf in Sources */ = {isa = PBXBuildFile; fileRef = 23F460412252F0B600F5415F /* low_battery.caf */; };
+		23F460512252F0D300F5415F /* temp_alert.caf in Sources */ = {isa = PBXBuildFile; fileRef = 23F460442252F0B600F5415F /* temp_alert.caf */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		3B80C3941E831B6300D905FE /* App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B80C3931E831B6300D905FE /* App.framework */; };
 		3B80C3951E831B6300D905FE /* App.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B80C3931E831B6300D905FE /* App.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -47,7 +57,12 @@
 		2304BF812239EB0D0021B9BD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2385A4B92238862B00A4F73C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		2385A4BA2238862B00A4F73C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		23CDC887222E0E310026D6EE /* beep.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep.caf; sourceTree = "<group>"; };
+		23F460402252F0B600F5415F /* install_err.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = install_err.caf; sourceTree = "<group>"; };
+		23F460412252F0B600F5415F /* low_battery.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = low_battery.caf; sourceTree = "<group>"; };
+		23F460422252F0B600F5415F /* enter_region.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = enter_region.caf; sourceTree = "<group>"; };
+		23F460432252F0B600F5415F /* baby_in_car_alert.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = baby_in_car_alert.caf; sourceTree = "<group>"; };
+		23F460442252F0B600F5415F /* temp_alert.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = temp_alert.caf; sourceTree = "<group>"; };
+		23F460452252F0B600F5415F /* exit_region.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = exit_region.caf; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		3B80C3931E831B6300D905FE /* App.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = App.framework; path = Flutter/App.framework; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
@@ -82,7 +97,12 @@
 		23CDC886222E0E310026D6EE /* Sound */ = {
 			isa = PBXGroup;
 			children = (
-				23CDC887222E0E310026D6EE /* beep.caf */,
+				23F460432252F0B600F5415F /* baby_in_car_alert.caf */,
+				23F460422252F0B600F5415F /* enter_region.caf */,
+				23F460452252F0B600F5415F /* exit_region.caf */,
+				23F460402252F0B600F5415F /* install_err.caf */,
+				23F460412252F0B600F5415F /* low_battery.caf */,
+				23F460442252F0B600F5415F /* temp_alert.caf */,
 			);
 			path = Sound;
 			sourceTree = "<group>";
@@ -229,13 +249,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23CDC88A222E0E310026D6EE /* beep.caf in Resources */,
+				23F460492252F0B600F5415F /* baby_in_car_alert.caf in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				2304BF7E2239EB0C0021B9BD /* InfoPlist.strings in Resources */,
+				23F460482252F0B600F5415F /* enter_region.caf in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				9740EEB41CF90195004384FC /* Debug.xcconfig in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
+				23F460462252F0B600F5415F /* install_err.caf in Resources */,
+				23F460472252F0B600F5415F /* low_battery.caf in Resources */,
+				23F4604B2252F0B600F5415F /* exit_region.caf in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				23F4604A2252F0B600F5415F /* temp_alert.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,7 +361,12 @@
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
-				232FA58A222E13BD00C7085E /* beep.caf in Sources */,
+				23F4604C2252F0C100F5415F /* baby_in_car_alert.caf in Sources */,
+				23F4604D2252F0C400F5415F /* enter_region.caf in Sources */,
+				23F4604E2252F0C800F5415F /* exit_region.caf in Sources */,
+				23F4604F2252F0CF00F5415F /* install_err.caf in Sources */,
+				23F460502252F0D000F5415F /* low_battery.caf in Sources */,
+				23F460512252F0D300F5415F /* temp_alert.caf in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

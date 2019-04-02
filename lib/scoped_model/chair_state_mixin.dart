@@ -80,6 +80,7 @@ mixin ChairStateMixin on Model {
     await _targetBeacon.startRanging();
     _targetBeacon.rangingSubscription.onData((RangingResult result) {
       if (result.error != null) {
+        print(result.error);
         this._hasBeaconError = true;
         notifyListeners();
         return;
@@ -90,6 +91,7 @@ mixin ChairStateMixin on Model {
         String uuid = ids[0];
         int major = ids[1];
         int minor = ids[2];
+        print('uuid: $uuid , major: $major , minor: $minor');
         bool matched = _targetBeacon.uuid.toUpperCase() == uuid;
         if (!matched) return;
         if (_chairState.major == major && _chairState.minor == minor) return;
